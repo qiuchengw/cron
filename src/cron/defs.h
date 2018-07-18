@@ -378,7 +378,6 @@ enum ExpTimerExecFlag {
 
     //////////////////////////////////////////////////////////////////////////
     AUTOTASK_EXEC_RELATE_EXECANDTHEN = 0x01000000,	// 相对时间之后再次执行多次间隔
-
 };
 
 // 任务运行时状态
@@ -396,5 +395,6 @@ enum TimerRunningStatus {
     kTimeNotMatch,	// 无可执行的时间匹配
     kNoChanceExec,	// 虽然任务未过期，但是余下的时间里，任务都没有机会再执行了
 };
+
 }
 
