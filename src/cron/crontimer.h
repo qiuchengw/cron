@@ -2,9 +2,9 @@
 
 #include <list>
 #include "exarray.h"
-#include "ConstValues.h"
-#include "TimerInterface.h"
-#include "ReminderExp.h"
+#include "constvalues.h"
+#include "timerinterface.h"
+#include "reminderexp.h"
 
 // enum ENUM_AUTOTASK_EXECFLAG
 // {

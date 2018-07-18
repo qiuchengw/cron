@@ -1,6 +1,6 @@
 #pragma once
-#include "ConstValues.h"
-#include "TimerInterface.h"
+#include "constvalues.h"
+#include "timerinterface.h"
 
 enum class ExpTimerType {
     kTimerTypeInvalid = 0,

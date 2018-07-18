@@ -2,9 +2,9 @@
 //
 
 #include "stdafx.h"
-#include "ArgParser.h"
-#include "LittleTcmn.h"
-#include "..\cron\cron_man.h"
+#include "argparser.h"
+#include "littletcmn.h"
+#include "..\cron\cronman.h"
 
 #ifdef APP_NAME
 #define APP_NAME "LittleTShe"

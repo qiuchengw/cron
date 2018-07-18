@@ -1,10 +1,9 @@
 #include "stdafx.h"
 
-#include "cron_timer.h"
-#include "cron_man.h"
-#include "QHelper.h"
-#include <shlwapi.h>
-#include "ExpTimer.h"
+#include "crontimer.h"
+#include "cronman.h"
+#include "qhelper.h"
+#include "exptimer.h"
 
 mstring getRunningStatusDescription( ExpTimerRunningStatus eStatus ) {
     switch(eStatus) {

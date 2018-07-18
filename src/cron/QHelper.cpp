@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "QHelper.h"
+#include "qhelper.h"
 
 
 uint32_t QHelper::HowManySeconds( int nX,WCHAR cUnit ) {

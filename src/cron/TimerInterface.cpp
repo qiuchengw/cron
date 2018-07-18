@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "TimerInterface.h"
+#include "timerinterface.h"
 
 namespace timer {
 static MyTimerMan<MyTimer, 2, 50> _s_man_;

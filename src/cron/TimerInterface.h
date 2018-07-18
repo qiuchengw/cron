@@ -7,7 +7,7 @@
 #include <thread>
 #include <mutex>
 
-#include "WheelTimer.h"
+#include "wheeltimer.h"
 
 class TimerInterface {
 public:
@@ -37,8 +37,8 @@ public:
         if (due > 0) {
             // due 一次，然后再执行period
             t_->Start([=](void* that) {
-				// 回调一次
-				cb(p);
+                // 回调一次
+                cb(p);
 
                 if (period > 0) {
                     // 再启动一次circle定时器

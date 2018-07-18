@@ -3,8 +3,8 @@
 #include <list>
 #include <algorithm>
 #include <iterator>
-#include "ConstValues.h"
-#include "cron_timer.h"
+#include "constvalues.h"
+#include "crontimer.h"
 
 class QHelper {
 public:

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Console.h"
 #include <iostream>
 #include <vector>
-#include "../cron/QHelper.h"
+
+#include "console.h"
+#include "../cron/qhelper.h"
 
 using namespace std;
 

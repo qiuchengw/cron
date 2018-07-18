@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ExpTimer.h"
-#include "ConstValues.h"
+#include "exptimer.h"
+#include "constvalues.h"
 
 //////////////////////////////////////////////////////////////////////////
 // 时间：[2018/4/11]
@@ -50,8 +50,8 @@ public:
             __out dt::time& tmExec, __out int32_t &period_s) override;
 
 protected:
-    ExpTimerRunningStatus nextRightTimeFrom(__in const dt::time&tmTest, 
-		__in const dt::time& tmExec, __inout uint32_t &dwNextExecTime);
+    ExpTimerRunningStatus nextRightTimeFrom(__in const dt::time&tmTest,
+                                            __in const dt::time& tmExec, __inout uint32_t &dwNextExecTime);
 
 private:
     uint32_t			span_;		// 间隔时间或间隔日期

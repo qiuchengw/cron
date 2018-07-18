@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "ReminderExp.h"
-#include "QHelper.h"
+#include "reminderexp.h"
+#include "qhelper.h"
 
 
 ReminderExp::ReminderExp() {

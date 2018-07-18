@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "AbsTimer.h"
+#include "abstimer.h"
 
 
 AbsTimer::AbsTimer(const mstring& exp)

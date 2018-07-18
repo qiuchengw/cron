@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "ExpTimer.h"
-#include "AbsTimer.h"
-#include "RelateTimer.h"
+#include "exptimer.h"
+#include "abstimer.h"
+#include "relatetimer.h"
 
 ExpTimer::ExpTimer(const mstring& exp, ExpTimerType t)
     :exp_(exp), type_(t) {

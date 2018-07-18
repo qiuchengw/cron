@@ -2,7 +2,7 @@
 
 #pragma warning(disable:4244 4018)
 
-#include "cron_man.h"
+#include "cronman.h"
 
 void TaskCallback(void* lpParameter);
 
@@ -77,8 +77,8 @@ ExpTimerRunningStatus CronMan::start( CronTimer *pTimer,int nTaskID) {
 }
 
 CronTimer* CronMan::add( const dt::time &tmBegin,
-                              const dt::time& tmEnd, const mstring& szWhen,
-                              const mstring& szReminder,const mstring& szXField ) {
+                         const dt::time& tmEnd, const mstring& szWhen,
+                         const mstring& szReminder,const mstring& szXField ) {
 //     int nID = QDBEvents::GetInstance()->Timer_Add(
 //                   tmBegin,tmEnd,szWhen,szReminder,szXField);
 //     if (INVALID_ID != nID) {
@@ -91,8 +91,8 @@ CronTimer* CronMan::add( const dt::time &tmBegin,
 }
 
 bool CronMan::edit( CronTimer* pTimer,const dt::time &tmBegin,
-                         const dt::time& tmEnd, const mstring& szWhen,
-                         const mstring& szReminder,const mstring& szXField ) {
+                    const dt::time& tmEnd, const mstring& szWhen,
+                    const mstring& szReminder,const mstring& szXField ) {
 //     if (pTimer->started()) {
 //         ASSERT(false);
 //         return false;
@@ -116,7 +116,7 @@ bool CronMan::setRemindExp( CronTimer* pTimer,const mstring& pszRmdExp ) {
 }
 
 void CronMan::deinit() {
-	m_lstTimer.clear();
+    m_lstTimer.clear();
     timer::stop();
 }
 

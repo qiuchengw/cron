@@ -5,8 +5,11 @@
 
 // cpp file //////////////////////////////////////////////////
 
+#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
-#include "WheelTimer.h"
+#endif
+
+#include "wheeltimer.h"
 
 #ifdef _MSC_VER
 # include <sys/timeb.h>

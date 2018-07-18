@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "RelateTimer.h"
+#include "relatetimer.h"
 
 
 RelateTimer::RelateTimer(const mstring& exp)

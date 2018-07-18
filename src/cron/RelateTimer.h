@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ExpTimer.h"
-#include "ConstValues.h"
-#include "QHelper.h"
+#include "exptimer.h"
+#include "constvalues.h"
+#include "qhelper.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ʱ�䣺[2018/4/11]

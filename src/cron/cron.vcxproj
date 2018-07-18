@@ -145,38 +145,35 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbsTimer.h" />
-    <ClInclude Include="ConstValues.h" />
+    <ClInclude Include="abstimer.h" />
+    <ClInclude Include="constvalues.h" />
+    <ClInclude Include="cronman.h" />
+    <ClInclude Include="crontimer.h" />
     <ClInclude Include="exarray.h" />
-    <ClInclude Include="ExpTimer.h" />
-    <ClInclude Include="TimerInterface.h" />
-    <ClInclude Include="WheelTimer.h" />
-    <ClInclude Include="QHelper.h" />
-    <ClInclude Include="cron_timer.h" />
-    <ClInclude Include="cron_man.h" />
-    <ClInclude Include="RelateTimer.h" />
-    <ClInclude Include="ReminderExp.h" />
+    <ClInclude Include="exptimer.h" />
+    <ClInclude Include="qhelper.h" />
+    <ClInclude Include="relatetimer.h" />
+    <ClInclude Include="reminderexp.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="stdstring.h" />
+    <ClInclude Include="time.h" />
+    <ClInclude Include="timerinterface.h" />
+    <ClInclude Include="wheeltimer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AbsTimer.cpp" />
-    <ClCompile Include="cron.cpp" />
-    <ClCompile Include="ExpTimer.cpp" />
-    <ClCompile Include="WheelTimer.cpp" />
-    <ClCompile Include="QHelper.cpp" />
-    <ClCompile Include="cron_timer.cpp" />
-    <ClCompile Include="cron_man.cpp" />
-    <ClCompile Include="RelateTimer.cpp" />
-    <ClCompile Include="ReminderExp.cpp" />
+    <ClCompile Include="abstimer.cpp" />
+    <ClCompile Include="cronman.cpp" />
+    <ClCompile Include="crontimer.cpp" />
+    <ClCompile Include="exptimer.cpp" />
+    <ClCompile Include="qhelper.cpp" />
+    <ClCompile Include="relatetimer.cpp" />
+    <ClCompile Include="reminderexp.cpp" />
     <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TimerInterface.cpp" />
+    <ClCompile Include="timerinterface.cpp" />
+    <ClCompile Include="wheeltimer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
