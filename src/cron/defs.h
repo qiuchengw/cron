@@ -3,10 +3,28 @@
 #include <list>
 #include <vector>
 
+#include "stdstring.h"
+typedef CStdStringA mstring;
+typedef std::vector<mstring> StringArray;
+
 #ifndef INVALID_ID
 #define INVALID_ID (-1)
 #endif
 
+#ifndef _HasFlag
+#	define _HasFlag(l,f) ((l) & (f))
+#endif
+
+#ifndef _AddFlag
+#	define _AddFlag(l,f) ((l) |= (f))
+#endif
+
+#ifndef _RemoveFlag
+#	define _RemoveFlag(l,f) ((l) &= ~(f))
+#endif
+
+
+namespace cron {
 enum {
     // 刷新autotask,
     // lParam
@@ -138,74 +156,74 @@ enum {
 
     //////////////////////////////////////////////////////////////////////////
     /** plan选中通知
-     *	params:
-     *		-[in]
-     *          lParam  QPlan* 可以为null
+    *	params:
+    *		-[in]
+    *          lParam  QPlan* 可以为null
     **/
     VIEWPLAN_NOTIFY_PLANSELCHANGED,
 
     /** 添加stage通知
-     *	params:
-     *		-[in]
-     *          lParam  QStage*
+    *	params:
+    *		-[in]
+    *          lParam  QStage*
     **/
     VIEWPLAN_NOTIFY_STAGEADDED,    //
 
     /** 删除stage通知
-     *	params:
-     *		-[in]
-     *          lParam  nStageID
+    *	params:
+    *		-[in]
+    *          lParam  nStageID
     **/
     VIEWPLAN_NOTIFY_STAGEDELETED,
 
     /** 添加goal通知
-     *	params:
-     *		-[in]
-     *          lParam  QStage*
-     *              可能是NULL
+    *	params:
+    *		-[in]
+    *          lParam  QStage*
+    *              可能是NULL
     **/
     VIEWPLAN_NOTIFY_STAGESELCHANGED,
 
     /** 添加goal通知
-      *	params:
-      *		-[in]
-      *          lParam  QGoal*
-     **/
+    *	params:
+    *		-[in]
+    *          lParam  QGoal*
+    **/
     VIEWPLAN_NOTIFY_GOALADDED,
 
     /** 添加goal通知
-     *	params:
-     *		-[in]
-     *          lParam  GOAL ID
+    *	params:
+    *		-[in]
+    *          lParam  GOAL ID
     **/
     VIEWPLAN_NOTIFY_GOALDELETED,
 
     /** 添加goal通知
-     *	params:
-     *		-[in]
-     *          lParam  QGoal*
-     *              可能是NULL
+    *	params:
+    *		-[in]
+    *          lParam  QGoal*
+    *              可能是NULL
     **/
     VIEWPLAN_NOTIFY_GOALSELCHANGED,
 
     /** 添加goalitem通知
-      *	params:
-      *		-[in]
-      *          lParam  QGoalitem*
-     **/
+    *	params:
+    *		-[in]
+    *          lParam  QGoalitem*
+    **/
     VIEWPLAN_NOTIFY_GOALSUBITEMADDED,
 
     /** 删除goalitme通知
-     *	params:
-     *		-[in]
-     *          lParam  QGoal* (goalitem的父亲指针)
+    *	params:
+    *		-[in]
+    *          lParam  QGoal* (goalitem的父亲指针)
     **/
     VIEWPLAN_NOTIFY_GOALSUBITEMDELETED,
 
     /** goalitem状态变化通知
-     *	params:
-     *		-[in]
-     *          lParam  QGoalitem*
+    *	params:
+    *		-[in]
+    *          lParam  QGoalitem*
     **/
     VIEWPLAN_NOTIFY_GOALSUBITEMSTATUSCHANGED,
 };
@@ -240,9 +258,9 @@ enum ENUM_TASK_OPERATION {
 };
 
 enum ENUM_TASK_EXECFLAG {
-    TASK_EXEC_NOTSET	= 0,	// 系统启动
+    TASK_EXEC_NOTSET = 0,	// 系统启动
     // 相对时间
-    TASK_EXEC_AFTERSYSBOOT	= 0x00000001,	// 系统启动
+    TASK_EXEC_AFTERSYSBOOT = 0x00000001,	// 系统启动
     TASK_EXEC_AFTERTASKSTART = 0x00000002,	// 任务启动
     TASK_EXEC_AFTERMINDERSTART = 0x00000004,// 本程序启动
     TASK_EXEC_AFTERPROGSTART = 0x00000008,// 外部程序启动
@@ -260,8 +278,8 @@ enum ENUM_TASK_EXECFLAG {
 
 // 任务状态
 enum ENUM_TASK_STATUS {
-    TASK_STATUS_NOTBEGIN	= 0,	// 还未进行到任务周期
-    TASK_STATUS_PROCESSING	= 1,	// 进行中
+    TASK_STATUS_NOTBEGIN = 0,	// 还未进行到任务周期
+    TASK_STATUS_PROCESSING = 1,	// 进行中
     TASK_STATUS_PAUSE = 2,		// 暂停
     TASK_STATUS_ABORT = 3,		// 完成
     TASK_STATUS_FINISH = 4,		// 放弃
@@ -343,9 +361,9 @@ enum ENUM_AUTOTASK_OPERATION {
 
 
 enum ExpTimerExecFlag {
-    AUTOTASK_EXEC_NOTSET	= 0,	// 系统启动
+    AUTOTASK_EXEC_NOTSET = 0,	// 系统启动
     // 相对时间
-    AUTOTASK_EXEC_AFTERSYSBOOT	= 0x00000001,	// 系统启动
+    AUTOTASK_EXEC_AFTERSYSBOOT = 0x00000001,	// 系统启动
     AUTOTASK_EXEC_AFTERTASKSTART = 0x00000002,	// 任务启动
     AUTOTASK_EXEC_AFTERMINDERSTART = 0x00000004,// 本程序启动
     AUTOTASK_EXEC_AFTERPROGSTART = 0x00000008,// 外部程序启动
@@ -373,9 +391,9 @@ enum ExpTimerRunningStatus {
     AUTOTASK_RUNNING_STATUS_UNTILNEXTSYSREBOOT,	// 需要下次机器重启，任务才执行
     AUTOTASK_RUNNING_STATUS_UNTILNEXTMINDERREBOOT,	// 需要程序重启，任务才执行
     AUTOTASK_RUNNING_STATUS_BASEDONEXETERNALPROG,	// 依赖的外部程序并没有运行
-    //////////////////////////////////////////////////////////////////////////
     // 绝对时间
     AUTOTASK_RUNNING_STATUS_TIMENOTMATCH,	// 无可执行的时间匹配
     AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC,	// 虽然任务未过期，但是余下的时间里，任务都没有机会再执行了
 };
+}
 

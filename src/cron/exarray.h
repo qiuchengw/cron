@@ -1,6 +1,3 @@
-#ifndef exarray_h__
-#define exarray_h__
-
 #pragma once
 
 #include <vector>
@@ -62,4 +59,5 @@ public:
     }
 };
 
-#endif
+typedef ExArray<int> IntArray;
+

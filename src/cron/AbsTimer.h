@@ -1,7 +1,7 @@
 #pragma once
 
 #include "exptimer.h"
-#include "constvalues.h"
+#include "defs.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ʱ�䣺[2018/4/11]

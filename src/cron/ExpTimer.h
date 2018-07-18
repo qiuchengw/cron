@@ -1,5 +1,6 @@
 #pragma once
-#include "constvalues.h"
+
+#include "defs.h"
 #include "timerinterface.h"
 
 enum class ExpTimerType {

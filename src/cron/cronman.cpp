@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 
 #pragma warning(disable:4244 4018)
 

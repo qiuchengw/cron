@@ -1,7 +1,7 @@
 #pragma once
 
 #include "exptimer.h"
-#include "constvalues.h"
+#include "defs.h"
 #include "qhelper.h"
 
 //////////////////////////////////////////////////////////////////////////

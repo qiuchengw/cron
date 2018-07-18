@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 #include "exptimer.h"
 #include "abstimer.h"
 #include "relatetimer.h"

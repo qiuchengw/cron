@@ -2,7 +2,7 @@
 
 #include <list>
 #include "exarray.h"
-#include "constvalues.h"
+#include "defs.h"
 #include "timerinterface.h"
 #include "reminderexp.h"
 

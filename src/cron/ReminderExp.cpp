@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 #include "reminderexp.h"
 #include "qhelper.h"
 

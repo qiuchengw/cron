@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 
 #include "crontimer.h"
 #include "cronman.h"
