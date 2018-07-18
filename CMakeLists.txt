@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 2.8)
+
+project(cron)
+
+# 编译的时候带入调试信息
+# add_compile_options(-g)
+
+SET(CMAKE_VERBOSE_MAKEFILE on)
+
+#
+#最低c++11 建议使用c++14
+#
+
+include(CheckCXXCompilerFlag)  
+CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+
+if(COMPILER_SUPPORTS_CXX14)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+elseif(COMPILER_SUPPORTS_CXX11)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+else()
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+SET(SOURCE_UP_PATH ${PROJECT_SOURCE_DIR}/../)
+SET(TOP_SOURCE_PATH ${PROJECT_SOURCE_DIR})
+SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+include(${PROJECT_SOURCE_DIR}/common.cmake)
+
+include_directories("${PROJECT_SOURCE_DIR}/src")
+
+#以下项目文件
+ADD_SUBDIRECTORY("${PROJECT_SOURCE_DIR}/src/cron")
+ADD_SUBDIRECTORY("${PROJECT_SOURCE_DIR}/src/shell")
+ADD_SUBDIRECTORY("${PROJECT_SOURCE_DIR}/src/test")
+
+# IF(MSVC)
+#     ADD_SUBDIRECTORY("${PROJECT_SOURCE_DIR}/src/xxx")
+# ELSE()
+#     ADD_SUBDIRECTORY("${PROJECT_SOURCE_DIR}/src/xxx")
+# ENDIF()
