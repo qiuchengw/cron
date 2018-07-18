@@ -1,10 +1,9 @@
 // LittleTShell.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include "argparser.h"
 #include "littletcmn.h"
-#include "..\cron\cronman.h"
+#include "cron/ExpTimer.h"
 
 #ifdef APP_NAME
 #define APP_NAME "LittleTShe"
@@ -112,24 +111,21 @@ void ShowHelp() {
          <<endl<<endl;
 }
 
-BOOL SendRequestToLittleT(ENUM_AUTOTASK_DOWHAT nDoWhat, const mstring& sDoWhatParam,
+bool SendRequestToLittleT(ENUM_AUTOTASK_DOWHAT nDoWhat, const mstring& sDoWhatParam,
                           const mstring& sWhenDo, const mstring& sRemindexp, dt::time tmBegin, dt::time tmEnd,
                           __out mstring& sError) {
-    // 创建timer
-    auto * man = CronMan::instance();
-    man->add(tmBegin, tmEnd, sWhenDo, sRemindexp, sDoWhatParam);
+	if (auto t = ExpTimer::create(sWhenDo)) {
+		t->setLife(tmBegin, tmEnd);
+		return true;
+	}
 
-    return TRUE;
+    return true;
 }
 
 int _tmain(int argc, _TCHAR* argv[]) {
-    ::CoInitialize(NULL);
-
     // 输出中文
     wcout.imbue(locale("chs"));
     wcout.imbue(locale("chs"));
-
-    CronMan::instance()->init();
 
     // 参数对不对？
     QArgvParser aParser;
@@ -158,7 +154,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
     int ii;
     std::cin >> ii;
 
-    ::CoUninitialize();
     return 0;
 }
 
