@@ -2,6 +2,8 @@
 #include "relatetimer.h"
 
 
+namespace cron {
+
 RelateTimer::RelateTimer(const mstring& exp)
     :ExpTimer(exp, ExpTimerType::kTimerTypeRelate) {
 }
@@ -156,4 +158,6 @@ ExpTimerRunningStatus RelateTimer::getNextExecTimeFrom(
     }
     ASSERT(false);
     return AUTOTASK_RUNNING_STATUS_BADTIMER;
+}
+
 }

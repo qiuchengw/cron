@@ -121,7 +121,6 @@ protected:
 
     public:
         ~_TimerThread() {
-            std::cout << "hell des";
         }
 
         static void thread_body(_TimerThread *that) {

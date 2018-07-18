@@ -1,6 +1,9 @@
 #pragma once
 
 #include "crontimer.h"
+#include "singleton.h"
+
+namespace cron {
 
 typedef std::list<CronTimer*>	TimerList;
 typedef TimerList::iterator TimerListItr;
@@ -37,3 +40,4 @@ private:
     TimerList		m_lstTimer;
 };
 
+}

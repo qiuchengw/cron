@@ -2,6 +2,7 @@
 
 #include "exptimer.h"
 
+namespace cron {
 
 struct ReminderParam {
     int		nSeconds; // 提前多少秒提醒
@@ -44,3 +45,4 @@ private:
     ReminderParam   trp_;
 };
 
+}

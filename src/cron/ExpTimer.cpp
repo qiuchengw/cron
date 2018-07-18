@@ -1,7 +1,8 @@
-
 #include "exptimer.h"
 #include "abstimer.h"
 #include "relatetimer.h"
+
+namespace cron {
 
 ExpTimer::ExpTimer(const mstring& exp, ExpTimerType t)
     :exp_(exp), type_(t) {
@@ -129,4 +130,5 @@ ExpTimerRunningStatus ExpTimer::startFrom(dt::time &tmBegin, OnTimeoutCallback c
         break;
     }
     return eStatus;
+}
 }

@@ -1,6 +1,6 @@
-
 #include "abstimer.h"
 
+namespace cron {
 
 AbsTimer::AbsTimer(const mstring& exp)
     :ExpTimer(exp, ExpTimerType::kTimerTypeAbs) {
@@ -330,3 +330,4 @@ ExpTimerRunningStatus AbsTimer::getNextExecTimeFrom( __inout dt::time& tm_test,
     return AUTOTASK_RUNNING_STATUS_BADTIMER;
 }
 
+}

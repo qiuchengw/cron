@@ -5,6 +5,8 @@
 #include "qhelper.h"
 #include "exptimer.h"
 
+namespace cron {
+
 mstring getRunningStatusDescription( ExpTimerRunningStatus eStatus ) {
     switch(eStatus) {
     case AUTOTASK_RUNNING_STATUS_BADTIMER://-2://	// 不能解析timer表达式
@@ -147,4 +149,5 @@ bool CronTimer::enableReminder( int nTaskID,bool bEnable/*=true */ ) {
 //     }
 //     return bRet;
     return false;
+}
 }

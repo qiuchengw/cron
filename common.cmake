@@ -6,4 +6,5 @@ link_directories("${LIBRARY_OUTPUT_PATH}")
 add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 add_definitions(-DDEBUG)
+add_definitions(-DNOMINMAX)
 

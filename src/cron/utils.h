@@ -1,9 +1,16 @@
-#pragma once
+ï»¿#pragma once
 
 #include <iostream>
 #include <string>
 #include <sstream>
+
 #include "deps/date/include/date/date.h"
+#include "defs.h"
+
+#include "stdstring.h"
+typedef CStdStr<char> mstring;
+CStdStringA W2222;
+mstring s2222;
 
 namespace dt {
 using clock = std::chrono::system_clock;
@@ -17,7 +24,6 @@ using secs = std::chrono::seconds;
 
 inline time now() {
     return clock::now();
-
 }
 
 enum class ParseFlag {
@@ -27,6 +33,7 @@ enum class ParseFlag {
 };
 
 inline bool parse(time& t, const std::string& str, ParseFlag f = ParseFlag::kFlagDate) {
+
     std::istringstream in(str);
     date::sys_seconds tp;
     switch (f) {
@@ -34,14 +41,14 @@ inline bool parse(time& t, const std::string& str, ParseFlag f = ParseFlag::kFla
         in >> date::parse("%F", tp);
         break;
     case ParseFlag::kFlagTime:
-        // ±ØĞëÒªÓĞ ÈÕÆÚ×Ö¶Î£¬·ñÔò»á½âÎöÊ§°Ü
+        // å¿…é¡»è¦æœ‰ æ—¥æœŸå­—æ®µï¼Œå¦åˆ™ä¼šè§£æå¤±è´¥
         in >> date::parse("%F %T", tp);
         if (in.fail()) {
             in.clear();
             // 22:01 --> 1970-1-1 22:01:00
-            mstring s;
+			mstring s;
             if (str.find(" ") == -1) {
-                s = "1970-1-1 "; // ¼ÓÈÕÆÚ
+                s = "1970-1-1 "; // åŠ æ—¥æœŸ
             }
             s += str;
             if (1 == std::count_if(str.begin(), str.end(), [](auto&t) {
@@ -67,7 +74,7 @@ inline bool parse(time& t, const std::string& str, ParseFlag f = ParseFlag::kFla
     return true;
 }
 
-// Ö±½ÓÊ¹ÓÃdate::formate
+// ç›´æ¥ä½¿ç”¨date::formate
 using date::format;
 inline std::string format_dt(const time& t) {
     return date::format("%c", t);
@@ -148,7 +155,7 @@ inline uint32_t make_uint_time(const time& t) {
     dwTime <<= 8;
     dwTime |= (((st.tm_sec & 0x3F) << 2));
     dwTime <<= 8;
-    dwTime |= 0;	// ºÁÃëÖµÎª0
+    dwTime |= 0;	// æ¯«ç§’å€¼ä¸º0
     return dwTime;
 }
 

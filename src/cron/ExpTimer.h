@@ -1,7 +1,10 @@
 #pragma once
 
-#include "defs.h"
 #include "timerinterface.h"
+#include "utils.h"
+#include "exarray.h"
+
+namespace cron {
 
 enum class ExpTimerType {
     kTimerTypeInvalid = 0,
@@ -141,3 +144,4 @@ private:
     dt::time		tm_next_exec_;//	下次执行时间
 };
 
+}

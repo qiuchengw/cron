@@ -16,6 +16,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+namespace cron {
+
 class RelateTimer : public ExpTimer {
 public:
     RelateTimer(const mstring& exp);
@@ -66,3 +68,4 @@ private:
     ExpTimerExecFlag	eflag_exec_;
 };
 
+}

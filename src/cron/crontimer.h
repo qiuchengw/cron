@@ -56,6 +56,8 @@
 // };
 //
 
+namespace cron {
+
 class ExpTimer;
 
 enum ENUM_TIMER_FLAG {
@@ -115,3 +117,4 @@ private:
     ReminderExp* reminder_;
     ExpTimer* timer_ = nullptr;
 };
+}

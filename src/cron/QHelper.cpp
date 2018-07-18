@@ -1,6 +1,7 @@
 
 #include "qhelper.h"
 
+namespace cron {
 
 uint32_t QHelper::HowManySeconds( int nX,WCHAR cUnit ) {
     switch (cUnit) {
@@ -196,4 +197,5 @@ bool QHelper::ParseUnitTime(__in const CStdStringW& src, __out int &nT, __out wc
     tmp.pop_back();
 
     return QHelper::ParseInt(tmp, nT);
+}
 }

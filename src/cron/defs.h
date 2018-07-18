@@ -4,8 +4,9 @@
 #include <vector>
 
 #include "stdstring.h"
-typedef CStdStringA mstring;
+typedef CStdStr<char> mstring;
 typedef std::vector<mstring> StringArray;
+
 
 #ifndef INVALID_ID
 #define INVALID_ID (-1)

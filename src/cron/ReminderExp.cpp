@@ -2,6 +2,7 @@
 #include "reminderexp.h"
 #include "qhelper.h"
 
+namespace cron {
 
 ReminderExp::ReminderExp() {
 }
@@ -122,4 +123,5 @@ bool ReminderExp::setRemindTimer(const dt::time& t_exe, OnTimeoutCallback cb, vo
 
     // 单次定时器
     return setTimer(dwSecToRemind * 1000, 0, cb, &trp_);
+}
 }

@@ -1,8 +1,6 @@
-
-
-#pragma warning(disable:4244 4018)
-
 #include "cronman.h"
+
+namespace cron {
 
 void TaskCallback(void* lpParameter);
 
@@ -128,3 +126,4 @@ bool CronMan::enableReminder( CronTimer*pTimer,int nTaskID,bool bEnabled ) {
     return pTimer->enableReminder(nTaskID,bEnabled);
 }
 
+}

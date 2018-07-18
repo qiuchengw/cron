@@ -3,8 +3,10 @@
 #include <list>
 #include <algorithm>
 #include <iterator>
-#include "constvalues.h"
+#include "defs.h"
 #include "crontimer.h"
+
+namespace cron {
 
 class QHelper {
 public:
@@ -37,3 +39,4 @@ public:
     **/
     static bool ParseUnitTime(__in const CStdStringW& src, __out int &nT, __out wchar_t& cUnit);
 };
+}
