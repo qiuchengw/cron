@@ -70,7 +70,7 @@ namespace cron {
 			return "GetExecFlagText->Î´Öª²ÎÊý";
 		}
 
-		inline mstring timeUnitStr(WCHAR unit) {
+		inline mstring timeUnitStr(char unit) {
 			switch (unit) {
 			case 's':
 			case 'S':

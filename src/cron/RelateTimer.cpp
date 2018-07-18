@@ -35,8 +35,10 @@ bool RelateTimer::parse() {
     char prop;
     mstring val;
     while (!sExpTest.IsEmpty()) {
-        if (!_parse_prop_val(sExpTest, prop, val))
-            return false;
+		if (!_parse_prop_val(sExpTest, prop, val)) {
+			return false;
+		}
+
         switch (prop) {
         case 'R': {
             eflag_exec_ = (TimerExecType)std::stol(val);

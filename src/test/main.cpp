@@ -1,34 +1,21 @@
 #include <iostream>
-
-#include "../../deps/date/include/date/date.h"
-#include "../../deps/date/include/date/tz.h"
 #include <chrono>
+#include "cron/exptimer.h"
 
-#include "../cron/stdafx.h"
-#include "../cron/time.h"
+using namespace cron;
 
-// Timer* test_timers(TimerManager & man, int sec, const mstring& des) {
-//     Timer *t = new Timer(man);
-//     t->Start([=]() {
-//         // std::cout << "des:[" << des << "]-[" << sec << "]fired!" << std::endl;
-//     }, sec, Timer::CIRCLE);
-//     return t;
-// }
+class MyTask {
+public:
+	MyTask() {
+		std::cout << "MyTask Instance created:" << dt::format_time(dt::now(), true) << std::endl;
+	}
+
+	void doTask() {
+		std::cout << "do task:" << dt::format_time(dt::now(), true) <<std::endl;
+	}
+};
 
 int main() {
-    using namespace date;
-
-    TimerManager m;
-    for (int i = 0; i < 10000; ++i) {
-        test_timers(m, i * 10 + 100, "timer1");
-    }
-
-//	test_timers(m, 300, "timer3");
-
-    while (true) {
-        m.DetectTimers();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
 
 // 	auto d1 = sys_days{ 2017_y / 3 / 4 } +hours{ 23 } +minutes{ 59 } +
 // 		seconds{ 59 } +milliseconds{ 999 };
@@ -82,8 +69,15 @@ int main() {
 //     auto t6 = dt::combine_date_time(dw_d, dt::make_uint_time(t_now));
 //     std::cout << t6 << std::endl << std::endl;
 
+	MyTask a_task;
+	// 启动任务后5s执行一次，然后每隔2s执行一次，共计执行5次后停止
+	if (auto t = ExpTimer::create("R=2;P=5s; Q = 2s; C = 5;")) {
+		t->startFrom(dt::now(), [](void *p) {
+			reinterpret_cast<MyTask*>(p)->doTask();
+		}, &a_task);
+	}
 
-    int ii;
-    std::cin >> ii;
+	// 不要让这个线程立即退出，以观察Task的执行
+	std::this_thread::sleep_for(std::chrono::minutes(1));
 }
 

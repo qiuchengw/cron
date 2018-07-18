@@ -114,10 +114,10 @@ void ShowHelp() {
 bool SendRequestToLittleT(ENUM_AUTOTASK_DOWHAT nDoWhat, const mstring& sDoWhatParam,
                           const mstring& sWhenDo, const mstring& sRemindexp, dt::time tmBegin, dt::time tmEnd,
                           __out mstring& sError) {
-	if (auto t = ExpTimer::create(sWhenDo)) {
-		t->setLife(tmBegin, tmEnd);
-		return true;
-	}
+// 	if (auto t = ExpTimer::create(sWhenDo)) {
+// 		t->setLife(tmBegin, tmEnd);
+// 		return true;
+// 	}
 
     return true;
 }

@@ -6,28 +6,45 @@ namespace cron {
 
 ExpTimer::ExpTimer(const mstring& exp, TimerType t)
     :exp_(exp), type_(t) {
+
+	// 默认设置生命期为一个比较长的时间
+	if (dt::parse(life_end_, "3999-1-1")) {
+		setLife(dt::now(), life_end_);
+	}
 }
 
 ExpTimer::~ExpTimer() {
 }
 
-ExpTimer* ExpTimer::create(const mstring& exp) {
-    if (exp.IsEmpty()) {
+ExpTimer* ExpTimer::create(const mstring& sexp) {
+	// 要去除exp中的所有空格
+	mstring exp = sexp;
+	exp.Trim();
+	exp.Remove(' ');
+	exp.Remove('\t');
+
+	if (exp.IsEmpty()) {
         return nullptr;
     }
+
 
     ExpTimer* t = nullptr;
     switch (exp.GetAt(0)) {
     case 'R':
         t = new RelateTimer(exp);
-		t->parse();
 		break;
 
     case 'A':
         t = new AbsTimer(exp);
-		t->parse();
 		break;
     }
+
+	if (t) {
+		if (!t->parse()) {
+			delete t;
+			t = nullptr;
+		}
+	}
     return t;
 }
 

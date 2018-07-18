@@ -58,18 +58,27 @@ cron的原始代码写的太烂，几个月前，经过了好几天业余时间�
 ```
 
 ### 代码的集成使用
-TODO
+```cpp
+    MyTask a_task;
+	// 启动任务后5s执行一次，然后每隔2s执行一次，共计执行5次后停止
+	if (auto t = ExpTimer::create("R=2;P=5s; Q = 2s; C = 5;")) {
+		t->startFrom(dt::now(), [](void *p) {
+			reinterpret_cast<MyTask*>(p)->doTask();
+		}, &a_task);
+	}
+```
 
 ### TODO
 - [ ] 完善README说明
 - [ ] 清洁代码
     - [x] 统一文件名命名风格
     - [ ] 统一方法/变量/类等命名风格
-    - [ ] 使用namespace隔离代码
-    - [ ] 清理无效代码
+    - [x] 使用namespace隔离代码
+    - [x] 清理无效代码
     - [ ] 去掉windows相关依赖
     - [ ] 合理化头文件包含顺序
-- [ ] 支持cmake
-    - [ ] 支持gcc 5.4.0编译
+- [x] 支持cmake
+- [ ] 支持gcc 5.4.0编译
 - [ ] 支持linux环境
+- [ ] 相对时间：检测系统/进程启动时间
 

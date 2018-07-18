@@ -234,7 +234,7 @@ inline int compare_time(const time& t1, const time& t2) {
 
 namespace helper {
 
-inline uint32_t howManySecs(int n, WCHAR unit) {
+inline uint32_t howManySecs(int n, char unit) {
     switch (unit) {
     case 's':
     case 'S':
@@ -395,7 +395,7 @@ inline bool makeAbsTimerExp(TimerExecType flag, dt::time& tmB, dt::time& tmE, St
 }
 
 // 构造提前提醒的定时器表达式
-inline mstring makeRemindExp(int adv, WCHAR unit, const mstring&sound, const mstring&msg) {
+inline mstring makeRemindExp(int adv, char unit, const mstring&sound, const mstring&msg) {
     unit = tolower(unit);
 	if ((adv <= 0) || ((unit != 's') && (unit != 'm') && (unit != 'h'))) {
 		return "";
