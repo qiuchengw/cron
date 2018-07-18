@@ -236,14 +236,14 @@ namespace helper {
 
 inline uint32_t howManySecs(int nX, WCHAR unit) {
     switch (unit) {
-    case L's':
-    case L'S':
+    case 's':
+    case 'S':
         return nX;
-    case L'm':
-    case L'M':
+    case 'm':
+    case 'M':
         return nX * 60;
-    case L'h':
-    case L'H':
+    case 'h':
+    case 'H':
         return nX * 3600;
     default:
         ASSERT(false);
@@ -253,14 +253,14 @@ inline uint32_t howManySecs(int nX, WCHAR unit) {
 
 inline mstring timeUnitStr(WCHAR unit) {
     switch (unit) {
-    case L's':
-    case L'S':
+    case 's':
+    case 'S':
         return "秒";
-    case L'm':
-    case L'M':
+    case 'm':
+    case 'M':
         return "分";
-    case L'h':
-    case L'H':
+    case 'h':
+    case 'H':
         return "时";
     default:
         ASSERT(false);
@@ -270,7 +270,7 @@ inline mstring timeUnitStr(WCHAR unit) {
 
 inline mstring makeRelateTimerExp(ExpTimerExecFlag exec,
                                   int span, char unit, /* 相对于eExec?定时间 */
-                                  int span1 = 0, char unit1 = L's', /* ?后间隔， 0 为无间隔 */
+                                  int span1 = 0, char unit1 = 's', /* ?后间隔， 0 为无间隔 */
                                   int exec_count = 0) {
     mstring exp;
     // R=1;P=20m;Q=22m;C=100;
@@ -326,7 +326,7 @@ inline bool makeAbsTimerExp(ExpTimerExecFlag flag, dt::time& tmB, dt::time& tmE,
         }
     }
     // 去掉最后一个字符','
-    sTimePots.TrimRight(L',');
+    sTimePots.TrimRight(',');
 
     // 日期部分
     if (AUTOTASK_EXEC_ATDATE == flag) {
@@ -414,7 +414,7 @@ inline bool makeAbsTimerExp(ExpTimerExecFlag flag, dt::time& tmB, dt::time& tmE,
 inline mstring makeRemindExp(int nA, WCHAR cAUnit,
                              const mstring&sSound, const mstring&sMsg) {
     cAUnit = tolower(cAUnit);
-    if ((nA <= 0) || ((cAUnit != L's') && (cAUnit != L'm') && (cAUnit != L'h')))
+    if ((nA <= 0) || ((cAUnit != 's') && (cAUnit != 'm') && (cAUnit != 'h')))
         return "";
     mstring sRet;
     sRet.Format("A=%d%c;\nS=%s;\nM=%s;\n", nA, cAUnit, sSound, sMsg);
@@ -437,7 +437,7 @@ inline bool parseUnitTime(__in const CStdStringW& src, __out int &nT, __out char
         return false;
 
     unit = tolower(tmp.back());
-    if ((L's' != unit) && (L'm' != unit) && (L'h' != unit))
+    if (('s' != unit) && ('m' != unit) && ('h' != unit))
         return false;
     tmp.pop_back();
 

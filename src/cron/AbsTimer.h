@@ -55,15 +55,14 @@ protected:
                                             __in const dt::time& tm_exec, __inout uint32_t &dwNextExecTime);
 
 private:
-    uint32_t			span_;		// 间隔时间或间隔日期
+    uint32_t span_;		// 间隔时间或间隔日期
 
-    //----------------------------------------
-    IntArray		arx_;		// 执行日期点，需配合ENUM_TASK_EXECFLAG才能确定其值的意义
-    IntArray		ar_time_;	// 执行时间点，
-    //-----------------------------------------------
+    Ints arx_;		// 执行日期点，需配合ENUM_TASK_EXECFLAG才能确定其值的意义
+    Ints ar_time_;	// 执行时间点，
+
     // 在一天中的 [03:00 ~ 20:00] 每隔 30m 执行一次
-    uint16_t			t_begin_;	// 执行时间
-    uint16_t			t_end_;
+    uint16_t t_begin_;	// 执行时间
+    uint16_t t_end_;
 };
 
 }

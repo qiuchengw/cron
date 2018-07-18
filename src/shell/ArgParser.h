@@ -259,7 +259,7 @@ protected:
     **/
     inline BOOL IsCommand(__in const CStdString& sText) {
         ASSERT(sText.size() > 1);
-        return (sText[0] == L'-');
+        return (sText[0] == '-');
     }
 
     /** 任务有效期
@@ -330,7 +330,7 @@ protected:
 
         // 日期点；时间点
         StrArray aS;
-        if (SplitString(arP[0], aS, L':') != 2) {
+        if (SplitString(arP[0], aS, ':') != 2) {
             m_arErrors.push_back("-a   执行时间（绝对时间）    参数错误: " + arP[0]);
             return FALSE;
         }
@@ -351,10 +351,10 @@ protected:
             return FALSE;
         }
         StrArray arDatePots;
-        SplitString(aS[1], arDatePots, L',');
+        SplitString(aS[1], arDatePots, ',');
 
         StrArray arTimePots;
-        if (SplitString(arP[1], arTimePots, L',') <= 0) {
+        if (SplitString(arP[1], arTimePots, ',') <= 0) {
             m_arErrors.push_back("-a   执行时间（绝对时间）    执行时间点无效：" + src);
             return FALSE;
         }
@@ -375,7 +375,7 @@ protected:
 
         // 相对于；间隔；执行次数
         StrArray aS;
-        if (SplitString(arP[0], aS, L':') != 2) {
+        if (SplitString(arP[0], aS, ':') != 2) {
             m_arErrors.push_back("-r   执行时间（相对时间）    参数错误: " + src);
             return FALSE;
         }
@@ -394,7 +394,7 @@ protected:
             return FALSE;
         }
         int nSpan = 0;
-        char unit = L's';
+        char unit = 's';
         if (!helper::parseUnitTime(aS[1], nSpan, unit)) {
             m_arErrors.push_back("-r   执行时间（相对时间）    参数错误：" + src);
             return FALSE;
@@ -402,7 +402,7 @@ protected:
 
         // 间隔和执行次数
         int nSpan1 = 0, nExecCount = 0;
-        char cUnit1 = L's';
+        char cUnit1 = 's';
         if (!arP[1].IsEmpty()) {
             if (!helper::parseUnitTime(arP[1], nSpan1, cUnit1)) {
                 m_arErrors.push_back("-r   执行时间（相对时间）    参数错误：" + src);
@@ -445,7 +445,7 @@ protected:
      *          result  结果
     **/
     int SplitString(__in const mstring& src, __out StrArray& result,
-                    __in const char chSep = L';') {
+                    __in const char chSep = ';') {
         result.clear();
 
         mstring tmp = src;

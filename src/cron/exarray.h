@@ -59,5 +59,5 @@ public:
     }
 };
 
-typedef ExArray<int> IntArray;
+typedef ExArray<int> Ints;
 

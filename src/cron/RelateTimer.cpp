@@ -13,16 +13,16 @@ RelateTimer::~RelateTimer() {
 
 mstring RelateTimer::description() {
     mstring when_des, time_part;
-    when_des.Format("在<b .yellow>[%s] [%d][%s]</b>之后",
+    when_des.Format("在[%s] [%d][%s]之后",
                     getExecFlagText(eflag_exec_), span_, helper::timeUnitStr(span_unit_));
     // then every
     if (isExecSpan2()) {
-        time_part.Format("然后每 <b .yellow>[%d][%s]</b>执行", span2_, helper::timeUnitStr(span2_unit_));
+        time_part.Format("然后每[%d][%s]执行", span2_, helper::timeUnitStr(span2_unit_));
         when_des += "<br/>" + time_part;
         // after x times stop
         if (isExecCount()) {
-            time_part.Format("在 <b .yellow>[%d]</b> 次后停止", exec_count_);
-            when_des += "<br />" + time_part;
+            time_part.Format("在[%d] 次后停止", exec_count_);
+            when_des += "" + time_part;
         }
     }
     return when_des;
@@ -39,21 +39,21 @@ bool RelateTimer::parse() {
         if (!_parse_prop_val(sExpTest, prop, val))
             return false;
         switch (prop) {
-        case L'R': {
+        case 'R': {
             eflag_exec_ = (ExpTimerExecFlag)std::stol(val);
             break;
         }
-        case L'P': {
+        case 'P': {
             if (!_parse_span_time(val, span_unit_, span_))
                 return false;
             break;
         }
-        case L'Q': { // 第二个时间间隔
+        case 'Q': { // 第二个时间间隔
             if (!_parse_span_time(val, span2_unit_, span2_))
                 return false;
             break;
         }
-        case L'C': { // 执行次数
+        case 'C': { // 执行次数
             exec_count_ = std::stol(val);
             break;
         }

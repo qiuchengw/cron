@@ -113,8 +113,8 @@ protected:
     //	sProp = r;
     //	val = 1;
     bool _parse_prop_val(__inout mstring&exp, __out char& prop, __out mstring& val) {
-        int idx = exp.Find(L'=');
-        if ((-1 == idx) || (idx != 1) || ((idx = exp.Find(L';')) == -1)) {
+        int idx = exp.Find('=');
+        if ((-1 == idx) || (idx != 1) || ((idx = exp.Find(';')) == -1)) {
             return false;
         }
         prop = exp[0];
@@ -125,7 +125,7 @@ protected:
 
     // 2,4,8,9
     // 以 英文‘,’ 分隔的数字字符，转换到整数值
-    bool _parse_to_array(__inout mstring& exp, __out IntArray & ar);
+    bool _parse_to_array(__inout mstring& exp, __out Ints & ar);
 
     // 200[s|m|h]
     // 200m = 200 * 60s;  unit = m;

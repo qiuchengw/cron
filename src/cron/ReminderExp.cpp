@@ -29,16 +29,16 @@ bool ReminderExp::parse(const mstring&exp, __out int &nA,
         if (!_parse_prop_val(sPart, prop, val))
             return false;
         switch (prop) {
-        case L'A': {
+        case 'A': {
             if (!helper::parseUnitTime(val, nA, cAUnit) || (nA <= 0))
                 return false;
             break;
         }
-        case L'S': {	// sound
+        case 'S': {	// sound
             sSound = val;
             break;
         }
-        case L'M': {
+        case 'M': {
             sMsg = val;
             break;
         }

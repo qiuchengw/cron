@@ -65,11 +65,11 @@ bool ExpTimer::setTimer(int64_t due, int64_t period, OnTimeoutCallback cb, void*
     return timer_id_ > 0;
 }
 
-bool ExpTimer::_parse_to_array(__inout mstring& exp, __out IntArray & ar) {
+bool ExpTimer::_parse_to_array(__inout mstring& exp, __out Ints & ar) {
     ar.clear();
     int idx;
     while (!exp.IsEmpty()) {
-        idx = exp.Find(L',');
+        idx = exp.Find(',');
         if (idx != -1) {
             ar.push_back(std::stol(exp.Mid(0, idx)));
             exp = exp.Mid(idx + 1);
