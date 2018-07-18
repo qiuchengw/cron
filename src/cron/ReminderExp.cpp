@@ -1,6 +1,6 @@
 
 #include "reminderexp.h"
-#include "qhelper.h"
+
 
 namespace cron {
 
@@ -30,7 +30,7 @@ bool ReminderExp::parse(const mstring&sExp, __out int &nA,
             return false;
         switch (cProp) {
         case L'A': {
-            if (!QHelper::ParseUnitTime(sValue, nA, cAUnit) || (nA <= 0))
+            if (!helper::parseUnitTime(sValue, nA, cAUnit) || (nA <= 0))
                 return false;
             break;
         }
@@ -58,7 +58,7 @@ bool ReminderExp::getRemindString(__out mstring& sReminderDes) {
     if (parse(exp_, nA, cUnit, sSound, sMsg)) {
         sReminderDes.Format(
             "在执行前:%d %s. 播放声音:%s. 提示消息:%s",
-            nA, QHelper::GetTimeUnitString(cUnit),
+            nA, helper::timeUnitStr(cUnit),
             sSound.IsEmpty() ? "无" : sSound,
             sMsg.IsEmpty() ? "无" : sMsg);
         return true;
@@ -83,7 +83,7 @@ bool ReminderExp::setRemindTimer(const dt::time& t_exe, OnTimeoutCallback cb, vo
         return false;
     }
 
-    trp_.nSeconds = QHelper::HowManySeconds(nA, unit);
+    trp_.nSeconds = helper::howManySecs(nA, unit);
     ASSERT(trp_.nSeconds > 0);
     trp_.data = d;
     trp_.sSound = sound;
@@ -116,7 +116,7 @@ bool ReminderExp::setRemindTimer(const dt::time& t_exe, OnTimeoutCallback cb, vo
         return true;
     }
 
-    trp_.nSeconds = QHelper::HowManySeconds(nA, unit);
+    trp_.nSeconds = helper::howManySecs(nA, unit);
     // 如果距离该提示的时间还足够长，那么需要创建一个定时器回调函数
     // 当回调发生时再向窗口发消息，通知显示提示窗口
     // 创建单次定时器来执行提示回调

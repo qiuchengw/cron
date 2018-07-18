@@ -1,5 +1,5 @@
-
 #include "relatetimer.h"
+#include "crontimer.h"
 
 
 namespace cron {
@@ -14,10 +14,10 @@ RelateTimer::~RelateTimer() {
 mstring RelateTimer::whenDoString() {
     mstring when_des, time_part;
     when_des.Format("在<b .yellow>[%s] [%d][%s]</b>之后",
-                    getExecFlagText(eflag_exec_), span_, QHelper::GetTimeUnitString(span_unit_));
+                    getExecFlagText(eflag_exec_), span_, helper::timeUnitStr(span_unit_));
     // then every
     if (isExecSpan2()) {
-        time_part.Format("然后每 <b .yellow>[%d][%s]</b>执行", span2_, QHelper::GetTimeUnitString(span2_unit_));
+        time_part.Format("然后每 <b .yellow>[%d][%s]</b>执行", span2_, helper::timeUnitStr(span2_unit_));
         when_des += "<br/>" + time_part;
         // after x times stop
         if (isExecCount()) {

@@ -2,7 +2,7 @@
 
 #include "exptimer.h"
 #include "defs.h"
-#include "qhelper.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // 时间：[2018/4/11]
@@ -31,11 +31,11 @@ public:
             __out dt::time& tmExec, __out int32_t &period_s) override;
 
     uint32_t execSpanSeconds() const {
-        return QHelper::HowManySeconds(span_, span_unit_);
+        return helper::howManySecs(span_, span_unit_);
     }
 
     uint32_t execSpanSeconds2()const {
-        return QHelper::HowManySeconds(span2_, span2_unit_);
+        return helper::howManySecs(span2_, span2_unit_);
     }
 
     // 执行第一次后是否再间隔执行

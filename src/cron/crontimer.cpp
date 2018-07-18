@@ -2,7 +2,7 @@
 
 #include "crontimer.h"
 #include "cronman.h"
-#include "qhelper.h"
+
 #include "exptimer.h"
 
 namespace cron {

@@ -186,18 +186,18 @@ protected:
         // 时间
         int nT;
         wchar_t cUnit;
-        if (!QHelper::ParseUnitTime(arP[0], nT, cUnit)) {
+        if (!helper::parseUnitTime(arP[0], nT, cUnit)) {
             m_arErrors.push_back("-w   任务提示    提示时间错误：" + *i);
             return FALSE;
         }
         // 提示时间不能过长
-        DWORD nSecs = QHelper::HowManySeconds(nT, cUnit);
+        DWORD nSecs = helper::howManySecs(nT, cUnit);
         if ((nSecs > 86400) || (nSecs < 5)) {
             m_arErrors.push_back("-w   任务提示    提示时间范围[10s, 24h)：" + *i);
             return FALSE;
         }
 
-        sRemind = QHelper::MakeRemindExp(nT, cUnit, arP[1], arP[2]);
+        sRemind = helper::makeRemindExp(nT, cUnit, arP[1], arP[2]);
         return !sRemind.IsEmpty();
     }
 
@@ -261,7 +261,8 @@ protected:
         ASSERT(sText.size() > 1);
         return (sText[0] == L'-');
     }
-    /** 任务有效期
+    
+	/** 任务有效期
      *	return:
      *      TRUE    成功
     **/
@@ -358,7 +359,7 @@ protected:
             return FALSE;
         }
         mstring sError;
-        if ( !QHelper::MakeAbsExp(eFlag, tmBegin, tmEnd, arDatePots, arTimePots, sTime, sError )) {
+        if ( !helper::makeAbsTimerExp(eFlag, tmBegin, tmEnd, arDatePots, arTimePots, sTime, sError )) {
             m_arErrors.push_back(sError);
             return FALSE;
         }
@@ -394,7 +395,7 @@ protected:
         }
         int nSpan = 0;
         wchar_t cUnit = L's';
-        if (!QHelper::ParseUnitTime(aS[1], nSpan, cUnit)) {
+        if (!helper::parseUnitTime(aS[1], nSpan, cUnit)) {
             m_arErrors.push_back("-r   执行时间（相对时间）    参数错误：" + src);
             return FALSE;
         }
@@ -403,18 +404,18 @@ protected:
         int nSpan1 = 0, nExecCount = 0;
         wchar_t cUnit1 = L's';
         if (!arP[1].IsEmpty()) {
-            if (!QHelper::ParseUnitTime(arP[1], nSpan1, cUnit1)) {
+            if (!helper::parseUnitTime(arP[1], nSpan1, cUnit1)) {
                 m_arErrors.push_back("-r   执行时间（相对时间）    参数错误：" + src);
                 return FALSE;
             }
             if (!arP[2].IsEmpty()) {
-                if (!QHelper::ParseInt(arP[2], nExecCount)) {
+                if (!helper::parseInt(arP[2], nExecCount)) {
                     m_arErrors.push_back("-r   执行时间（相对时间）    参数错误" + src);
                     return FALSE;
                 }
             }
         }
-        sTime = QHelper::MakeReleateExp(eFlag, nSpan, cUnit, nSpan1, cUnit1, nExecCount);
+        sTime = helper::makeRelateTimerExp(eFlag, nSpan, cUnit, nSpan1, cUnit1, nExecCount);
         return TRUE;
     }
 
