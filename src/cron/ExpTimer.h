@@ -134,7 +134,7 @@ protected:
     bool _parse_span_time(__in const mstring &exp, __out char& unit, __out uint32_t& span);
 
 protected:
-    ExpTimerExecFlag eflag_exec_;
+    TimerExecType eflag_exec_;
     dt::time			life_begin_;	// 任务的生效时间
     dt::time			life_end_;	// 任务过期时间
 

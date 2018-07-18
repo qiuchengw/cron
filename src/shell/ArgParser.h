@@ -335,17 +335,17 @@ protected:
             return FALSE;
         }
 
-        ExpTimerExecFlag eFlag;
+        TimerExecType eFlag;
         // aS[0] 只能有3种可能：p,s,t
         if (aS[0].CompareNoCase("d") == 0) {
             // littlet 启动后
-            eFlag = AUTOTASK_EXEC_ATDATE;
+            eFlag = TimerExecType::kAtDate;
         } else if (aS[0].CompareNoCase("s") == 0) {
-            eFlag = AUTOTASK_EXEC_ATDAILY;
+            eFlag = TimerExecType::kAtDaily;
         } else if (aS[0].CompareNoCase("w") == 0) {
-            eFlag = AUTOTASK_EXEC_ATWEEKDAY;
+            eFlag = TimerExecType::kAtWeekday;
         } else if (aS[0].CompareNoCase("m") == 0) {
-            eFlag = AUTOTASK_EXEC_ATMONTHDAY;
+            eFlag = TimerExecType::kAtMonthDay;
         } else {
             m_arErrors.push_back("-a   执行时间（绝对时间）    无效参数错误：" + src);
             return FALSE;
@@ -380,15 +380,15 @@ protected:
             return FALSE;
         }
 
-        ExpTimerExecFlag eFlag;
+        TimerExecType eFlag;
         // aS[0] 只能有3种可能：p,s,t
         if (aS[0].CompareNoCase("p") == 0) {
             // littlet 启动后
-            eFlag = AUTOTASK_EXEC_AFTERMINDERSTART;
+            eFlag = TimerExecType::kAfterAppStart;
         } else if (aS[0].CompareNoCase("s") == 0) {
-            eFlag = AUTOTASK_EXEC_AFTERSYSBOOT;
+            eFlag = TimerExecType::kAfterSysBoot;
         } else if (aS[0].CompareNoCase("t") == 0) {
-            eFlag = AUTOTASK_EXEC_AFTERTASKSTART;
+            eFlag = TimerExecType::kAfterTimerStart;
         } else {
             m_arErrors.push_back("-r   执行时间（相对时间）    参数错误：" + src);
             return FALSE;

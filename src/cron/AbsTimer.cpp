@@ -24,7 +24,7 @@ bool AbsTimer::parse() {
 
         switch (prop) {
         case 'A': {
-            eflag_exec_ = (ExpTimerExecFlag)std::stol(val);
+            eflag_exec_ = (TimerExecType)std::stol(val);
             break;
         }
         case 'X': {
@@ -81,7 +81,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
     }
 
     switch (eflag_exec_) {
-    case AUTOTASK_EXEC_ATYEARDAY: {
+    case TimerExecType::kAtYearDay: {
         // 需要测试的执行日期
         dt::time t_test = dt::parse_uint_date(the_date);
 
@@ -110,7 +110,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
         return TimerRunningStatus::kNoChanceExec;
     }
 
-    case AUTOTASK_EXEC_ATDATE: {
+    case TimerExecType::kAtDate: {
         int idx = arx_.find_first_lgoreq(the_date);
         if (-1 != idx) {
             the_date = arx_[idx];
@@ -119,7 +119,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
         return TimerRunningStatus::kNoChanceExec; // 无机会再执行
     }
 
-    case AUTOTASK_EXEC_ATDAILY: {
+    case TimerExecType::kAtDaily: {
         ASSERT(arx_.size() == 1);
         auto tsdate = dt::parse_uint_date(the_date) - dt::parse_uint_date(dt::make_uint_date(life_begin_));
         uint32_t xday = dt::total_days(tsdate) % arx_[0]; // 还有几天下次执行
@@ -135,7 +135,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
         // 不应该执行到这儿
         return TimerRunningStatus::kAppError;
     }
-    case AUTOTASK_EXEC_ATWEEKDAY: {
+    case TimerExecType::kAtWeekday: {
         // 星期x执行
         ASSERT(arx_.size() == 1);
         if (0 == arx_[0]) // 必须至少有一个工作日是可以执行的
@@ -156,7 +156,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
         // 不应该执行到这儿,当前的设计是一周之内必有一天是可以执行的
         return TimerRunningStatus::kAppError;
     }
-    case AUTOTASK_EXEC_ATMONTHDAY: {
+    case TimerExecType::kAtMonthDay: {
         ASSERT(arx_.size() == 1);
 		if (0 == arx_[0]) {// 必须至少有一个工作日是可以执行的
 			return TimerRunningStatus::kBadTimer;
@@ -196,7 +196,7 @@ mstring AbsTimer::description() {
     time_part.TrimRight(',');
 
     switch (eflag_exec_) {
-    case AUTOTASK_EXEC_ATYEARDAY: {
+    case TimerExecType::kAtYearDay: {
         tm_test = dt::parse_uint_date(arx_[0]);
         mstring tmp;
         if (0 != span_) {
@@ -208,17 +208,17 @@ mstring AbsTimer::description() {
         when_des.Format("在[%s] [%s]", date_part, time_part);
         break;
     }
-    case AUTOTASK_EXEC_ATDATE: {
+    case TimerExecType::kAtDate: {
         tm_test = dt::parse_uint_date(arx_[0]);
         when_des.Format("在[%s] [%s]", dt::format_date(tm_test), time_part);
         break;
     }
-    case AUTOTASK_EXEC_ATDAILY: {
+    case TimerExecType::kAtDaily: {
         ASSERT(arx_.size() == 1);
         when_des.Format("每[%d]天的[%s]", arx_[0], time_part);
         break;
     }
-    case AUTOTASK_EXEC_ATWEEKDAY: {
+    case TimerExecType::kAtWeekday: {
         // 星期x执行
         ASSERT(arx_.size() == 1);
         mstring weekdays, tmp;
@@ -233,7 +233,7 @@ mstring AbsTimer::description() {
         when_des.Format("星期[%s](0-周日,...,6-周六)的 [%s]", weekdays, time_part);
         break;
     }
-    case AUTOTASK_EXEC_ATMONTHDAY: {
+    case TimerExecType::kAtMonthDay: {
         ASSERT(arx_.size() == 1);
         mstring days, tmp;
         for (int day = 0; day < 31; day++) {

@@ -1,5 +1,6 @@
 
 #include "reminderexp.h"
+#include "dict_zh.h"
 
 
 namespace cron {
@@ -58,7 +59,7 @@ bool ReminderExp::getRemindString(__out mstring& sReminderDes) {
     if (parse(exp_, nA, unit, sSound, sMsg)) {
         sReminderDes.Format(
             "在执行前:%d %s. 播放声音:%s. 提示消息:%s",
-            nA, helper::timeUnitStr(unit),
+            nA, dict::timeUnitStr(unit),
             sSound.IsEmpty() ? "无" : sSound,
             sMsg.IsEmpty() ? "无" : sMsg);
         return true;
