@@ -3,7 +3,7 @@
 namespace cron {
 
 AbsTimer::AbsTimer(const mstring& exp)
-    :ExpTimer(exp, ExpTimerType::kTimerTypeAbs) {
+    :ExpTimer(exp, TimerType::kTypeAbs) {
 }
 
 AbsTimer::~AbsTimer() {
@@ -14,11 +14,11 @@ bool AbsTimer::parse() {
         return false;
 
     mstring tmp_exp = exp(), val;
-    wchar_t cProp;
+    char prop;
     while (!tmp_exp.IsEmpty()) {
-        if (!_parse_prop_val(tmp_exp, cProp, val))
+        if (!_parse_prop_val(tmp_exp, prop, val))
             return false;
-        switch (cProp) {
+        switch (prop) {
         case L'A': {
             eflag_exec_ = (ExpTimerExecFlag)std::stol(val);
             break;
@@ -183,7 +183,7 @@ ExpTimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
     return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;
 }
 
-mstring AbsTimer::whenDoString() {
+mstring AbsTimer::description() {
     mstring when_des;
     mstring time_part;
 

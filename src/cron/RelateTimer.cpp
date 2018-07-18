@@ -5,13 +5,13 @@
 namespace cron {
 
 RelateTimer::RelateTimer(const mstring& exp)
-    :ExpTimer(exp, ExpTimerType::kTimerTypeRelate) {
+    :ExpTimer(exp, TimerType::kTypeRelate) {
 }
 
 RelateTimer::~RelateTimer() {
 }
 
-mstring RelateTimer::whenDoString() {
+mstring RelateTimer::description() {
     mstring when_des, time_part;
     when_des.Format("在<b .yellow>[%s] [%d][%s]</b>之后",
                     getExecFlagText(eflag_exec_), span_, helper::timeUnitStr(span_unit_));
@@ -33,28 +33,28 @@ bool RelateTimer::parse() {
         return false;
 
     mstring sExpTest = exp();
-    wchar_t cProp;
-    mstring sValue;
+    char prop;
+    mstring val;
     while (!sExpTest.IsEmpty()) {
-        if (!_parse_prop_val(sExpTest, cProp, sValue))
+        if (!_parse_prop_val(sExpTest, prop, val))
             return false;
-        switch (cProp) {
+        switch (prop) {
         case L'R': {
-            eflag_exec_ = (ExpTimerExecFlag)std::stol(sValue);
+            eflag_exec_ = (ExpTimerExecFlag)std::stol(val);
             break;
         }
         case L'P': {
-            if (!_parse_span_time(sValue, span_unit_, span_))
+            if (!_parse_span_time(val, span_unit_, span_))
                 return false;
             break;
         }
         case L'Q': { // 第二个时间间隔
-            if (!_parse_span_time(sValue, span2_unit_, span2_))
+            if (!_parse_span_time(val, span2_unit_, span2_))
                 return false;
             break;
         }
         case L'C': { // 执行次数
-            exec_count_ = std::stol(sValue);
+            exec_count_ = std::stol(val);
             break;
         }
         default:
@@ -112,15 +112,15 @@ ExpTimerRunningStatus RelateTimer::_CheckWith(
     }
 }
 
-RelateTimer::EnumTimerFiredFlag RelateTimer::onTimerFired(OnTimeoutCallback cb, void *d) {
+RelateTimer::TimerBehavior RelateTimer::onFired(OnTimeoutCallback cb, void *d) {
     cb(d);
 
     exec_count_already_++;
     if (isExecCount() && exec_count_already_ >= exec_count_) {
         // 需要停止定时器了
-        return EnumTimerFiredFlag::kTimerStop;
+        return TimerBehavior::kStop;
     }
-    return EnumTimerFiredFlag::kTimerContinue;
+    return TimerBehavior::kContinue;
 }
 
 // tmTest 将被调整，毫秒级别将会忽略置为0

@@ -9,6 +9,8 @@
 
 #include "wheeltimer.h"
 
+namespace cron {
+
 class TimerInterface {
 public:
     typedef std::chrono::milliseconds Interval;
@@ -226,3 +228,4 @@ void stop(int id);
 void stop();
 }
 
+}

@@ -30,8 +30,8 @@ public:
     // A=15[s|h|m] 执行任务前15[秒，分，时]提示
     // S=path; path 为声音文件路径 ,空为不播放声音
     // M=message; messsage 为自定义消息，空为无自定义消息
-    bool parse(const mstring&sExp, __out int &nA,
-               __out wchar_t&cAUnit, __out mstring&sSound, __out mstring&sMsg);
+    bool parse(const mstring&exp, __out int &nA,
+               __out char&cAUnit, __out mstring&sSound, __out mstring&sMsg);
 
     bool getRemindString(__out mstring& sReminderDes);
 

@@ -125,7 +125,7 @@ bool CronTimer::update( dt::time tmB, dt::time tmEnd, const mstring& szExpWhen,
     xfield_ = szExpXFiled;
 
     if (timer_ = ExpTimer::create(szExpWhen)) {
-        timer_->setLifeTime(tmB, tmEnd);
+        timer_->setLife(tmB, tmEnd);
 //
 // 		if (!reminder_->setExp(szExpRemind))
 // 			return false;

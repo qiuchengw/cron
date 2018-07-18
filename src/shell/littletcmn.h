@@ -26,10 +26,10 @@ const int   G_LITTLET_SHELL_PIPEL_BUFFER_SIZE = 4096;
 // LITTLET_SHELL_PIPLENAME
 typedef struct _LittleTShell_CopyData_Param {
     ENUM_AUTOTASK_DOWHAT eDoWhat;
-    wchar_t     szDoWhatParam[256];
-    wchar_t     szWhenDo[256];
-    wchar_t     szRemindExp[256];
-    wchar_t     szResult[256];
+    char     szDoWhatParam[256];
+    char     szWhenDo[256];
+    char     szRemindExp[256];
+    char     szResult[256];
     double      tmBegin;
     double      tmEnd;
 }*LP_LittleTShell_CopyData_Param;

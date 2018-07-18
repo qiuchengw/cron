@@ -15,10 +15,10 @@ bool ReminderExp::setExp(const mstring& exp) {
     return true;
 }
 
-bool ReminderExp::parse(const mstring&sExp, __out int &nA,
-                        __out wchar_t&cAUnit, __out mstring&sSound, __out mstring&sMsg) {
-    wchar_t cProp;
-    mstring sPart, sValue, sTemp = sExp;
+bool ReminderExp::parse(const mstring&exp, __out int &nA,
+                        __out char&cAUnit, __out mstring&sSound, __out mstring&sMsg) {
+    char prop;
+    mstring sPart, val, sTemp = exp;
     int idx;
     while (true) {
         idx = sTemp.Find(";\n");
@@ -26,20 +26,20 @@ bool ReminderExp::parse(const mstring&sExp, __out int &nA,
             return false;
         sPart = sTemp.Left(idx + 1);
         sTemp = sTemp.Mid(idx + 2);
-        if (!_parse_prop_val(sPart, cProp, sValue))
+        if (!_parse_prop_val(sPart, prop, val))
             return false;
-        switch (cProp) {
+        switch (prop) {
         case L'A': {
-            if (!helper::parseUnitTime(sValue, nA, cAUnit) || (nA <= 0))
+            if (!helper::parseUnitTime(val, nA, cAUnit) || (nA <= 0))
                 return false;
             break;
         }
         case L'S': {	// sound
-            sSound = sValue;
+            sSound = val;
             break;
         }
         case L'M': {
-            sMsg = sValue;
+            sMsg = val;
             break;
         }
         default:
@@ -53,12 +53,12 @@ bool ReminderExp::parse(const mstring&sExp, __out int &nA,
 
 bool ReminderExp::getRemindString(__out mstring& sReminderDes) {
     int nA;
-    wchar_t cUnit;
+    char unit;
     mstring sSound, sMsg;
-    if (parse(exp_, nA, cUnit, sSound, sMsg)) {
+    if (parse(exp_, nA, unit, sSound, sMsg)) {
         sReminderDes.Format(
             "在执行前:%d %s. 播放声音:%s. 提示消息:%s",
-            nA, helper::timeUnitStr(cUnit),
+            nA, helper::timeUnitStr(unit),
             sSound.IsEmpty() ? "无" : sSound,
             sMsg.IsEmpty() ? "无" : sMsg);
         return true;
@@ -76,7 +76,7 @@ bool ReminderExp::setRemindTimer(const dt::time& t_exe, OnTimeoutCallback cb, vo
         return false;
     }
 
-    wchar_t unit = '\0';
+    char unit = '\0';
     int nA = 0;
     mstring sound, msg;
     if (!parse(exp_, nA, unit, sound, msg)) {

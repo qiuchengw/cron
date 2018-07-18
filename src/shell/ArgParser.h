@@ -185,19 +185,19 @@ protected:
 
         // 时间
         int nT;
-        wchar_t cUnit;
-        if (!helper::parseUnitTime(arP[0], nT, cUnit)) {
+        char unit;
+        if (!helper::parseUnitTime(arP[0], nT, unit)) {
             m_arErrors.push_back("-w   任务提示    提示时间错误：" + *i);
             return FALSE;
         }
         // 提示时间不能过长
-        DWORD nSecs = helper::howManySecs(nT, cUnit);
+        DWORD nSecs = helper::howManySecs(nT, unit);
         if ((nSecs > 86400) || (nSecs < 5)) {
             m_arErrors.push_back("-w   任务提示    提示时间范围[10s, 24h)：" + *i);
             return FALSE;
         }
 
-        sRemind = helper::makeRemindExp(nT, cUnit, arP[1], arP[2]);
+        sRemind = helper::makeRemindExp(nT, unit, arP[1], arP[2]);
         return !sRemind.IsEmpty();
     }
 
@@ -261,8 +261,8 @@ protected:
         ASSERT(sText.size() > 1);
         return (sText[0] == L'-');
     }
-    
-	/** 任务有效期
+
+    /** 任务有效期
      *	return:
      *      TRUE    成功
     **/
@@ -394,15 +394,15 @@ protected:
             return FALSE;
         }
         int nSpan = 0;
-        wchar_t cUnit = L's';
-        if (!helper::parseUnitTime(aS[1], nSpan, cUnit)) {
+        char unit = L's';
+        if (!helper::parseUnitTime(aS[1], nSpan, unit)) {
             m_arErrors.push_back("-r   执行时间（相对时间）    参数错误：" + src);
             return FALSE;
         }
 
         // 间隔和执行次数
         int nSpan1 = 0, nExecCount = 0;
-        wchar_t cUnit1 = L's';
+        char cUnit1 = L's';
         if (!arP[1].IsEmpty()) {
             if (!helper::parseUnitTime(arP[1], nSpan1, cUnit1)) {
                 m_arErrors.push_back("-r   执行时间（相对时间）    参数错误：" + src);
@@ -415,7 +415,7 @@ protected:
                 }
             }
         }
-        sTime = helper::makeRelateTimerExp(eFlag, nSpan, cUnit, nSpan1, cUnit1, nExecCount);
+        sTime = helper::makeRelateTimerExp(eFlag, nSpan, unit, nSpan1, cUnit1, nExecCount);
         return TRUE;
     }
 
@@ -445,7 +445,7 @@ protected:
      *          result  结果
     **/
     int SplitString(__in const mstring& src, __out StrArray& result,
-                    __in const wchar_t chSep = L';') {
+                    __in const char chSep = L';') {
         result.clear();
 
         mstring tmp = src;

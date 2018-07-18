@@ -4,7 +4,7 @@
 
 namespace cron {
 
-ExpTimer::ExpTimer(const mstring& exp, ExpTimerType t)
+ExpTimer::ExpTimer(const mstring& exp, TimerType t)
     :exp_(exp), type_(t) {
 }
 
@@ -18,16 +18,15 @@ ExpTimer* ExpTimer::create(const mstring& exp) {
 
     ExpTimer* t = nullptr;
     switch (exp.GetAt(0)) {
-    case L'R':
+    case 'R':
         t = new RelateTimer(exp);
-        break;
+		t->parse();
+		break;
 
-    case L'A':
+    case 'A':
         t = new AbsTimer(exp);
-        break;
-    }
-    if (t) {
-        t->parse();
+		t->parse();
+		break;
     }
     return t;
 }
@@ -39,26 +38,26 @@ void ExpTimer::stop() {
     }
 }
 
-ExpTimer::EnumTimerFiredFlag ExpTimer::onTimerFired(OnTimeoutCallback cb, void *d) {
+ExpTimer::TimerBehavior ExpTimer::onFired(OnTimeoutCallback cb, void *d) {
     cb(d);
 
     // Ë¢ÐÂtimer
-    return EnumTimerFiredFlag::kTimerRefresh;
+    return TimerBehavior::kRefresh;
 }
 
 bool ExpTimer::setTimer(int64_t due, int64_t period, OnTimeoutCallback cb, void* d) {
     stop();
 
     timer_id_ = timer::set(due, period, [=](void*) {
-        switch (this->onTimerFired(cb, d)) {
-        case EnumTimerFiredFlag::kTimerContinue:
+        switch (this->onFired(cb, d)) {
+        case TimerBehavior::kContinue:
             break;
 
-        case EnumTimerFiredFlag::kTimerStop:
+        case TimerBehavior::kStop:
             stop();
             break;
 
-        case EnumTimerFiredFlag::kTimerRefresh:
+        case TimerBehavior::kRefresh:
             startFrom(dt::now(), cb, d);
             break;
         };
@@ -66,33 +65,33 @@ bool ExpTimer::setTimer(int64_t due, int64_t period, OnTimeoutCallback cb, void*
     return timer_id_ > 0;
 }
 
-bool ExpTimer::_parse_to_array(__inout mstring& sExp, __out IntArray & ar) {
+bool ExpTimer::_parse_to_array(__inout mstring& exp, __out IntArray & ar) {
     ar.clear();
     int idx;
-    while (!sExp.IsEmpty()) {
-        idx = sExp.Find(L',');
+    while (!exp.IsEmpty()) {
+        idx = exp.Find(L',');
         if (idx != -1) {
-            ar.push_back(std::stol(sExp.Mid(0, idx)));
-            sExp = sExp.Mid(idx + 1);
+            ar.push_back(std::stol(exp.Mid(0, idx)));
+            exp = exp.Mid(idx + 1);
         } else {
-            ar.push_back(std::stol(sExp));
+            ar.push_back(std::stol(exp));
             break;
         }
     }
     return ar.size() > 0;
 }
 
-bool ExpTimer::_parse_span_time(__in const mstring &sExp, __out wchar_t& cUnit, __out uint32_t& dwSpan) {
-    int len = sExp.GetLength();
-    cUnit = tolower(sExp.back());
-    dwSpan = std::stol(sExp.Mid(0, len - 1));
-    switch (cUnit) {
-    case L'm':
-    case L'M':
-    case L's':
-    case L'S':
-    case L'H':
-    case L'h':
+bool ExpTimer::_parse_span_time(__in const mstring &exp, __out char& unit, __out uint32_t& span) {
+    int len = exp.GetLength();
+    unit = tolower(exp.back());
+    span = std::stol(exp.Mid(0, len - 1));
+    switch (unit) {
+    case 'm':
+    case 'M':
+    case 's':
+    case 'S':
+    case 'H':
+    case 'h':
         return true;
     }
     ASSERT(false);

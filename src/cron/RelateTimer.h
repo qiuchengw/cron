@@ -23,7 +23,7 @@ public:
     RelateTimer(const mstring& exp);
     ~RelateTimer();
 
-    virtual mstring whenDoString() override;
+    virtual mstring description() override;
 
     virtual bool parse() override;
 
@@ -52,17 +52,17 @@ protected:
     ExpTimerRunningStatus _CheckWith(const dt::time& tm_start, const dt::time& tm_test,
                                      __out dt::time& tm_exec, __out int32_t &period_s);
 
-    virtual EnumTimerFiredFlag onTimerFired(OnTimeoutCallback cb, void *d) override;
+    virtual TimerBehavior onFired(OnTimeoutCallback cb, void *d) override;
 
 private:
     // 相对于ENUM_TASK_EXECFLAG所指示的任务的
     // 发生后多少时间执行第一次任务，单位换算为秒
     // 此时间限制为24小时之内
     uint32_t			span_;		// 间隔时间或间隔日期
-    wchar_t			span_unit_;	// 原始单位s/m/h
+    char			span_unit_;	// 原始单位s/m/h
     // 相对于第一次任务执行后多少时间执行
     uint32_t			span2_;	// 第二个时间间隔
-    wchar_t			span2_unit_;
+    char			span2_unit_;
     int				exec_count_;	// 第一次执行后，再执行的次数
     uint32_t exec_count_already_ = 0;	// 已经执行的次数
     ExpTimerExecFlag	eflag_exec_;

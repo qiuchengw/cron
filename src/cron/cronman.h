@@ -5,9 +5,6 @@
 
 namespace cron {
 
-typedef std::list<CronTimer*>	TimerList;
-typedef TimerList::iterator TimerListItr;
-
 class CronMan : public Singleton<CronMan> {
 public:
     ~CronMan() {
@@ -31,13 +28,13 @@ public:
     bool enableReminder(CronTimer*pTimer,int nTaskID,bool bEnabled);
 
 protected:
-    TimerListItr _find(int nID);
+	std::list<CronTimer*>::iterator _find(int nID);
     void deinit();
 
 private:
 
 private:
-    TimerList		m_lstTimer;
+	std::list<CronTimer*> timers_;
 };
 
 }

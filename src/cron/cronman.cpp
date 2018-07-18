@@ -14,24 +14,23 @@ bool CronMan::init() {
 }
 
 CronTimer* CronMan::get( int nTimerID ) {
-    TimerListItr itr = _find(nTimerID);
-    if (m_lstTimer.end() != itr)
+    auto itr = _find(nTimerID);
+    if (timers_.end() != itr)
         return *itr;
     CronTimer* pTimer = nullptr;// QDBEvents::GetInstance()->Timer_Get(nTimerID);
     if (NULL != pTimer) {
-        m_lstTimer.push_back(pTimer);
+        timers_.push_back(pTimer);
     }
     return pTimer;
 }
 
-TimerListItr CronMan::_find( int nID ) {
-    TimerListItr itrEnd = m_lstTimer.end();
-    for (TimerListItr itr = m_lstTimer.begin();
-            itr != itrEnd; ++itr) {
-        if ((*itr)->ID() == nID)
-            return itr;
-    }
-    return itrEnd;
+std::list<CronTimer*>::iterator CronMan::_find( int nID ) {
+	return std::find_if(timers_.begin(), timers_.end(), [=](CronTimer * t) {
+		if (t->ID() == nID) {
+			return true;
+		}
+		return false;
+	});
 }
 
 bool CronMan::destroy( CronTimer *pTimer ) {
@@ -51,10 +50,10 @@ bool CronMan::destroy( CronTimer *pTimer ) {
 bool CronMan::remove( CronTimer* pTimer ) {
     ASSERT(NULL != pTimer);
     pTimer->stop();
-    TimerListItr itr = _find(pTimer->ID());
-    if (m_lstTimer.end() != itr) {
+    auto itr = _find(pTimer->ID());
+    if (timers_.end() != itr) {
         delete *itr;
-        m_lstTimer.erase(itr);
+        timers_.erase(itr);
     }
     return false;
 }
@@ -82,7 +81,7 @@ CronTimer* CronMan::add( const dt::time &tmBegin,
 //     if (INVALID_ID != nID) {
     CronTimer *pTimer = new CronTimer(1, tmBegin, tmEnd, szWhen, szReminder, szXField);
     pTimer->start(2);
-    m_lstTimer.push_back(pTimer);
+    timers_.push_back(pTimer);
     return pTimer;
 //     }
     return NULL;
@@ -114,7 +113,7 @@ bool CronMan::setRemindExp( CronTimer* pTimer,const mstring& pszRmdExp ) {
 }
 
 void CronMan::deinit() {
-    m_lstTimer.clear();
+    timers_.clear();
     timer::stop();
 }
 

@@ -1,6 +1,8 @@
 
 #include "timerinterface.h"
 
+namespace cron {
+
 namespace timer {
 static MyTimerMan<MyTimer, 2, 50> _s_man_;
 
@@ -16,4 +18,5 @@ void stop() {
     _s_man_.stop();
 }
 
+}
 }

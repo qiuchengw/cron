@@ -43,7 +43,7 @@ public:
 
     virtual bool parse() override;
 
-    virtual mstring whenDoString() override;
+    virtual mstring description() override;
 
     virtual void execTimeSpot(std::vector<dt::time>& vTimes) override;
 
