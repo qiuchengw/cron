@@ -64,7 +64,7 @@ enum ENUM_TIMER_FLAG {
     TIMER_FLAG_REMINDERDISABLED = 0x00000001,	// 启用提示定时器
 };
 
-mstring getRunningStatusDescription(ExpTimerRunningStatus eStatus);
+mstring getRunningStatusDescription(TimerRunningStatus eStatus);
 mstring getExecFlagText(ExpTimerExecFlag eFlag);
 
 class CronMan;
@@ -94,7 +94,7 @@ public:
 
     bool stop();
 
-    ExpTimerRunningStatus start(int nTaskID);
+    TimerRunningStatus start(int nTaskID);
 
     bool reminderEnabled()const {
         return !(timer_flag_ & TIMER_FLAG_REMINDERDISABLED);

@@ -58,7 +58,7 @@ public:
     void stop();
 
     // 从某个时间点启动
-    ExpTimerRunningStatus startFrom(dt::time &begin, OnTimeoutCallback cb, void* d);
+    TimerRunningStatus startFrom(dt::time &begin, OnTimeoutCallback cb, void* d);
 
     // 何时做
     virtual mstring description() = 0;
@@ -98,10 +98,11 @@ protected:
 
     virtual TimerBehavior onFired(OnTimeoutCallback cb, void *d);
 
-    // tmTest之后的下次执行时间
-    // tmTest 将被调整，毫秒级别将会忽略置为0
+    // tm_test之后的下次执行时间
+    // tm_test 将被调整，毫秒级别将会忽略置为0
     // period_s 间隔执行的周期
-    virtual  ExpTimerRunningStatus getNextExecTimeFrom(__inout dt::time& tmTest, __out dt::time& tmExec, __out int32_t &period_s) = 0;
+    virtual  TimerRunningStatus getNextExecTimeFrom(__inout dt::time& tm_test,
+		__out dt::time& tm_exec, __out int32_t &period_s) = 0;
 
     bool setTimer(int64_t due, int64_t period, OnTimeoutCallback cb, void* d);
 
@@ -141,7 +142,7 @@ private:
     int timer_id_ = 0;
     TimerType type_ = TimerType::kTypeInvalid;
     mstring exp_;
-    dt::time		tm_next_exec_;//	下次执行时间
+    dt::time next_exec_;//	下次执行时间
 };
 
 }

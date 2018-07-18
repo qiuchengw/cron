@@ -27,8 +27,8 @@ public:
 
     virtual bool parse() override;
 
-    virtual ExpTimerRunningStatus getNextExecTimeFrom(__inout dt::time& tmTest,
-            __out dt::time& tmExec, __out int32_t &period_s) override;
+    virtual TimerRunningStatus getNextExecTimeFrom(__inout dt::time& tm_test,
+            __out dt::time& tm_exec, __out int32_t &period_s) override;
 
     uint32_t execSpanSeconds() const {
         return helper::howManySecs(span_, span_unit_);
@@ -49,7 +49,7 @@ public:
     }
 
 protected:
-    ExpTimerRunningStatus _CheckWith(const dt::time& tm_start, const dt::time& tm_test,
+    TimerRunningStatus _CheckWith(const dt::time& tm_start, const dt::time& tm_test,
                                      __out dt::time& tm_exec, __out int32_t &period_s);
 
     virtual TimerBehavior onFired(OnTimeoutCallback cb, void *d) override;

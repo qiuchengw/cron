@@ -8,7 +8,7 @@ struct ReminderParam {
     int		nSeconds; // 提前多少秒提醒
     //int		nTaskID; // 任务id
     void*	data;
-    dt::time	tmExec; // 任务的执行时间
+    dt::time	tm_exec; // 任务的执行时间
     mstring sSound;	// 声音文件路径
     mstring sMsg; // 提示信息
 };

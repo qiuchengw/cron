@@ -382,19 +382,19 @@ enum ExpTimerExecFlag {
 };
 
 // 任务运行时状态
-enum ExpTimerRunningStatus {
-    AUTOTASK_RUNNING_STATUS_BADTIMER = -2,	// 不能解析timer表达式
-    AUTOTASK_RUNNING_STATUS_APPERROR = -1,	// 应用程序出现了错误
-    AUTOTASK_RUNNING_STATUS_OK = 0,	// 任务正常启动
-    AUTOTASK_RUNNING_STATUS_NOTSTARTUP = 1,	// 任务还未启动
-    AUTOTASK_RUNNING_STATUS_PAUSED,	// 任务还未启动
-    AUTOTASK_RUNNING_STATUS_OVERDUE,	// 任务过期了
-    AUTOTASK_RUNNING_STATUS_UNTILNEXTSYSREBOOT,	// 需要下次机器重启，任务才执行
-    AUTOTASK_RUNNING_STATUS_UNTILNEXTMINDERREBOOT,	// 需要程序重启，任务才执行
-    AUTOTASK_RUNNING_STATUS_BASEDONEXETERNALPROG,	// 依赖的外部程序并没有运行
+enum TimerRunningStatus {
+    kBadTimer = -2,	// 不能解析timer表达式
+    kAppError = -1,	// 应用程序出现了错误
+    kOk = 0,	// 任务正常启动
+    kNotStartup = 1,	// 任务还未启动
+    kPaused,	// 任务还未启动
+    kOverdue,	// 任务过期了
+    kUntilNextSysReboot,	// 需要下次机器重启，任务才执行
+    kUntilNextAppReboot,	// 需要程序重启，任务才执行
+    kBasedOnExternalApp,	// 依赖的外部程序并没有运行
     // 绝对时间
-    AUTOTASK_RUNNING_STATUS_TIMENOTMATCH,	// 无可执行的时间匹配
-    AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC,	// 虽然任务未过期，但是余下的时间里，任务都没有机会再执行了
+    kTimeNotMatch,	// 无可执行的时间匹配
+    kNoChanceExec,	// 虽然任务未过期，但是余下的时间里，任务都没有机会再执行了
 };
 }
 

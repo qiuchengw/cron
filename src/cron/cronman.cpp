@@ -66,11 +66,11 @@ bool CronMan::stop( CronTimer* pTimer ) {
     return true;
 }
 
-ExpTimerRunningStatus CronMan::start( CronTimer *pTimer,int nTaskID) {
+TimerRunningStatus CronMan::start( CronTimer *pTimer,int nTaskID) {
     if (pTimer != NULL) {
         return pTimer->start(nTaskID);
     }
-    return AUTOTASK_RUNNING_STATUS_BADTIMER;
+    return TimerRunningStatus::kBadTimer;
 }
 
 CronTimer* CronMan::add( const dt::time &tmBegin,

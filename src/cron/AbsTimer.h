@@ -39,20 +39,20 @@ public:
     AbsTimer(const mstring& exp);
     ~AbsTimer();
 
-    ExpTimerRunningStatus nextExecDate(__inout uint32_t& dwDate);
+    TimerRunningStatus nextExecDate(__inout uint32_t& ddate);
 
     virtual bool parse() override;
 
     virtual mstring description() override;
 
-    virtual void execTimeSpot(std::vector<dt::time>& vTimes) override;
+    virtual void execTimeSpot(std::vector<dt::time>& time_points) override;
 
-    virtual  ExpTimerRunningStatus getNextExecTimeFrom(__inout dt::time& tmTest,
-            __out dt::time& tmExec, __out int32_t &period_s) override;
+    virtual TimerRunningStatus getNextExecTimeFrom(__inout dt::time& tm_test,
+            __out dt::time& tm_exec, __out int32_t &period_s) override;
 
 protected:
-    ExpTimerRunningStatus nextRightTimeFrom(__in const dt::time&tmTest,
-                                            __in const dt::time& tmExec, __inout uint32_t &dwNextExecTime);
+    TimerRunningStatus nextRightTimeFrom(__in const dt::time&tm_test,
+                                            __in const dt::time& tm_exec, __inout uint32_t &dwNextExecTime);
 
 private:
     uint32_t			span_;		// 间隔时间或间隔日期

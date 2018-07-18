@@ -64,10 +64,10 @@ bool RelateTimer::parse() {
     return true;
 }
 
-ExpTimerRunningStatus RelateTimer::_CheckWith(
+TimerRunningStatus RelateTimer::_CheckWith(
     const dt::time& tm_start, const dt::time& tm_test, __out dt::time& tm_exec, __out int32_t &period_s) {
     if (tm_test >= life_end_) {
-        return AUTOTASK_RUNNING_STATUS_OVERDUE;
+        return TimerRunningStatus::kOverdue;
     }
     period_s = execSpanSeconds2();
     // 第一次执行时间是：
@@ -78,37 +78,37 @@ ExpTimerRunningStatus RelateTimer::_CheckWith(
         if (!isExecSpan2()) {
             // 错过第一次执行时间，并且非多次执行
             if (AUTOTASK_EXEC_AFTERSYSBOOT == eflag_exec_)
-                return AUTOTASK_RUNNING_STATUS_UNTILNEXTSYSREBOOT; // 等待系统重启
+                return TimerRunningStatus::kUntilNextSysReboot; // 等待系统重启
             else if (AUTOTASK_EXEC_AFTERMINDERSTART == eflag_exec_)
-                return AUTOTASK_RUNNING_STATUS_UNTILNEXTMINDERREBOOT; // 等待程序重启
+                return TimerRunningStatus::kUntilNextAppReboot; // 等待程序重启
             else // 非多次可执行，过期
-                return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;
+                return TimerRunningStatus::kNoChanceExec;
         }
 
         // 多次间隔执行
-        // 自从第一次可执行时间到tmTest已经过去了多长时间
+        // 自从第一次可执行时间到tm_test已经过去了多长时间
         int64_t dTotalSeconds = dt::total_seconds(tm_test - tm_first_exec);
         // 在过去的这么长时间里可以执行多少次？
         exec_count_already_ = dTotalSeconds / execSpanSeconds2(); //执行次数
         if (isExecCount() && (exec_count_already_ >= exec_count_)) {
             // 可执行次数已经超过了总共需要执行的次数
             if (AUTOTASK_EXEC_AFTERSYSBOOT == eflag_exec_)
-                return AUTOTASK_RUNNING_STATUS_UNTILNEXTSYSREBOOT; // 等待系统重启
+                return TimerRunningStatus::kUntilNextSysReboot; // 等待系统重启
             else if (AUTOTASK_EXEC_AFTERMINDERSTART == eflag_exec_)
-                return AUTOTASK_RUNNING_STATUS_UNTILNEXTMINDERREBOOT; // 等待程序重启
+                return TimerRunningStatus::kUntilNextAppReboot; // 等待程序重启
             else // 非多次可执行，过期
-                return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;
+                return TimerRunningStatus::kNoChanceExec;
         } else {
             // 可执行次数还没有超过了总共需要执行的次数
             tm_exec = tm_first_exec + dt::secs((exec_count_already_ + 1) * execSpanSeconds2());
             if (tm_exec >= life_end_) {
-                return AUTOTASK_RUNNING_STATUS_OVERDUE;
+                return TimerRunningStatus::kOverdue;
             }
-            return AUTOTASK_RUNNING_STATUS_OK;
+            return TimerRunningStatus::kOk;
         }
     } else {
         tm_exec = tm_first_exec;
-        return AUTOTASK_RUNNING_STATUS_OK;
+        return TimerRunningStatus::kOk;
     }
 }
 
@@ -123,20 +123,20 @@ RelateTimer::TimerBehavior RelateTimer::onFired(OnTimeoutCallback cb, void *d) {
     return TimerBehavior::kContinue;
 }
 
-// tmTest 将被调整，毫秒级别将会忽略置为0
-ExpTimerRunningStatus RelateTimer::getNextExecTimeFrom(
-    __inout dt::time& tmTest,__out dt::time& tmExec,__out int32_t &period_s) {
-    if (tmTest >= life_end_) {
-        return AUTOTASK_RUNNING_STATUS_OVERDUE;	// 过期
+// tm_test 将被调整，毫秒级别将会忽略置为0
+TimerRunningStatus RelateTimer::getNextExecTimeFrom(
+    __inout dt::time& tm_test,__out dt::time& tm_exec,__out int32_t &period_s) {
+    if (tm_test >= life_end_) {
+        return TimerRunningStatus::kOverdue;	// 过期
     }
 
     switch (eflag_exec_) {
     case AUTOTASK_EXEC_AFTERSYSBOOT: {	//= 0x00000001,	// 系统启动
-        // return _RelateTime_CheckWith(QProcessMan::GetSystemStartupTime(),tmTest,tmExec, period_s);
+        // return _RelateTime_CheckWith(QProcessMan::GetSystemStartupTime(),tm_test,tm_exec, period_s);
         break;
     }
     case AUTOTASK_EXEC_AFTERMINDERSTART: {	// = 0x00000004,// 本程序启动
-        //return _RelateTime_CheckWith(QProcessMan::GetCurrentProcessStartupTime(),tmTest,tmExec, period_s);
+        //return _RelateTime_CheckWith(QProcessMan::GetCurrentProcessStartupTime(),tm_test,tm_exec, period_s);
         break;
     }
     /*	case TASK_EXEC_AFTERPROGSTART:	// = 0x00000008,// 外部程序启动
@@ -144,7 +144,7 @@ ExpTimerRunningStatus RelateTimer::getNextExecTimeFrom(
     QTime tmProgStart;
     if (QProcessMgr::IsExeRun(m_sXFiledExp,tmProgStart))
     {
-    return _RelateTime_CheckWith(tmProgStart,tmTest,tmExec);
+    return _RelateTime_CheckWith(tmProgStart,tm_test,tm_exec);
     }
     return TASK_RUNNING_STATUS_BASEDONEXETERNALPROG;
     }
@@ -153,11 +153,11 @@ ExpTimerRunningStatus RelateTimer::getNextExecTimeFrom(
     return TASK_RUNNING_STATUS_BASEDONEXETERNALPROG;
     }*/
     case AUTOTASK_EXEC_AFTERTASKSTART: {	// = 0x00000002,	// 任务启动
-        return _CheckWith(life_begin_, tmTest, tmExec, period_s);
+        return _CheckWith(life_begin_, tm_test, tm_exec, period_s);
     }
     }
     ASSERT(false);
-    return AUTOTASK_RUNNING_STATUS_BADTIMER;
+    return TimerRunningStatus::kBadTimer;
 }
 
 }

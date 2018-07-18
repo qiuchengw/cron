@@ -98,36 +98,36 @@ bool ExpTimer::_parse_span_time(__in const mstring &exp, __out char& unit, __out
     return false;
 }
 
-ExpTimerRunningStatus ExpTimer::startFrom(dt::time &tmBegin, OnTimeoutCallback cb, void* d) {
+TimerRunningStatus ExpTimer::startFrom(dt::time &begin, OnTimeoutCallback cb, void* d) {
     if (started()) {
-        return AUTOTASK_RUNNING_STATUS_OK;
+        return TimerRunningStatus::kOk;
     }
 
     // 先停掉原来的
     stop();
 
-    int64_t lHowLongToExec;
-    ExpTimerRunningStatus eStatus;
+    int64_t secs_to_exec;
+    TimerRunningStatus status;
     while (true) {
         int32_t period_s = 0;
-        eStatus = getNextExecTimeFrom(tmBegin, tm_next_exec_, period_s);
-        if (eStatus != AUTOTASK_RUNNING_STATUS_OK) {
+        status = getNextExecTimeFrom(begin, next_exec_, period_s);
+        if (status != TimerRunningStatus::kOk) {
             break;
         }
-        lHowLongToExec = dt::total_seconds(tm_next_exec_ - dt::now());
-        if (lHowLongToExec <= 0) {
+        secs_to_exec = dt::total_seconds(next_exec_ - dt::now());
+        if (secs_to_exec <= 0) {
             // 往后找
-            tmBegin = tm_next_exec_ + dt::secs(1);
+            begin = next_exec_ + dt::secs(1);
             continue;
         }
 
         if (cb) {
-            if (setTimer(lHowLongToExec * 1000, period_s * 1000, cb, d)) {
-                return AUTOTASK_RUNNING_STATUS_APPERROR;
+            if (setTimer(secs_to_exec * 1000, period_s * 1000, cb, d)) {
+                return TimerRunningStatus::kAppError;
             }
         }
         break;
     }
-    return eStatus;
+    return status;
 }
 }

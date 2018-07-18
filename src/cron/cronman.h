@@ -24,7 +24,7 @@ public:
     bool remove( CronTimer* pTimer );
 
     bool stop(CronTimer* pTimer);
-    ExpTimerRunningStatus start(CronTimer *pTimer,int nTaskID);
+    TimerRunningStatus start(CronTimer *pTimer,int nTaskID);
     bool enableReminder(CronTimer*pTimer,int nTaskID,bool bEnabled);
 
 protected:

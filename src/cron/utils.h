@@ -117,11 +117,11 @@ inline std::tm to_calendar_time(const time& tp) {
     return result;
 }
 
-inline std::tm __extract_uint_date(uint32_t dwDate) {
+inline std::tm __extract_uint_date(uint32_t ddate) {
     std::tm d;
-    d.tm_mday = dwDate & 0xFF;
-    d.tm_mon = (dwDate >> 8) & 0xFF;
-    d.tm_year = (dwDate >> 16);
+    d.tm_mday = ddate & 0xFF;
+    d.tm_mon = (ddate >> 8) & 0xFF;
+    d.tm_year = (ddate >> 16);
     d.tm_wday = 0;
     return d;
 }
@@ -174,12 +174,12 @@ inline time parse_uint_time(uint32_t dwTime, const time& ymd = now()) {
     return combine_date_time(to_calendar_time(ymd), __extract_uint_time(dwTime));
 }
 
-inline time parse_uint_date(uint32_t dwDate, const time& hms = now()) {
-    return combine_date_time(__extract_uint_date(dwDate), to_calendar_time(hms));
+inline time parse_uint_date(uint32_t ddate, const time& hms = now()) {
+    return combine_date_time(__extract_uint_date(ddate), to_calendar_time(hms));
 }
 
-inline time combine_date_time(uint32_t dwDate, uint32_t dwTime) {
-    return combine_date_time(__extract_uint_date(dwDate), __extract_uint_time(dwTime));
+inline time combine_date_time(uint32_t ddate, uint32_t dwTime) {
+    return combine_date_time(__extract_uint_date(ddate), __extract_uint_time(dwTime));
 }
 
 inline time& set_time(time& ymd, int h, int m, int s, int mills = 0) {

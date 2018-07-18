@@ -7,31 +7,31 @@
 
 namespace cron {
 
-mstring getRunningStatusDescription( ExpTimerRunningStatus eStatus ) {
+mstring getRunningStatusDescription( TimerRunningStatus eStatus ) {
     switch(eStatus) {
-    case AUTOTASK_RUNNING_STATUS_BADTIMER://-2://	// 不能解析timer表达式
+    case TimerRunningStatus::kBadTimer://-2://	// 不能解析timer表达式
         return "无效的定时器";
-    case AUTOTASK_RUNNING_STATUS_APPERROR://-1://	// 应用程序出现了错误
+    case TimerRunningStatus::kAppError://-1://	// 应用程序出现了错误
         return "应用程序错误";
-    case AUTOTASK_RUNNING_STATUS_OK://0://	// 任务正常启动
+    case TimerRunningStatus::kOk://0://	// 任务正常启动
         return "一切正常";
-    case AUTOTASK_RUNNING_STATUS_NOTSTARTUP://1://	// 任务还未启动
+    case TimerRunningStatus::kNotStartup://1://	// 任务还未启动
         return "任务还未启动";
-    case AUTOTASK_RUNNING_STATUS_PAUSED: // 暂停中
+    case TimerRunningStatus::kPaused: // 暂停中
         return "任务暂停";
-    case AUTOTASK_RUNNING_STATUS_OVERDUE://	// 任务过期了
+    case TimerRunningStatus::kOverdue://	// 任务过期了
         return "任务过期";
-    case AUTOTASK_RUNNING_STATUS_UNTILNEXTSYSREBOOT://	// 需要下次机器重启，任务才执行
+    case TimerRunningStatus::kUntilNextSysReboot://	// 需要下次机器重启，任务才执行
         return "下次开机执行";
-    case AUTOTASK_RUNNING_STATUS_UNTILNEXTMINDERREBOOT:	// 需要程序重启，任务才执行
+    case TimerRunningStatus::kUntilNextAppReboot:	// 需要程序重启，任务才执行
         return "下次启动程序运行";
-    case AUTOTASK_RUNNING_STATUS_BASEDONEXETERNALPROG://	// 依赖的外部程序并没有运行
+    case TimerRunningStatus::kBasedOnExternalApp://	// 依赖的外部程序并没有运行
         return "依赖的外部程序并没有运行";
     //////////////////////////////////////////////////////////////////////////
     // 绝对时间
-    case AUTOTASK_RUNNING_STATUS_TIMENOTMATCH://	// 无可执行的时间匹配
+    case TimerRunningStatus::kTimeNotMatch://	// 无可执行的时间匹配
         return "无可执行的时间匹配";
-    case AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC://	// 虽然任务未过期，但是余下的时间里，任务都没有机会再执行了
+    case TimerRunningStatus::kNoChanceExec://	// 虽然任务未过期，但是余下的时间里，任务都没有机会再执行了
         return "任务没有机会再执行";
     default:
         return "未知标志";
@@ -84,8 +84,8 @@ CronTimer::CronTimer( int nID,dt::time tmBegin,dt::time tmEnd,
 CronTimer::~CronTimer(void) {
 }
 
-ExpTimerRunningStatus CronTimer::start(int nTaskID) {
-    auto ret = ExpTimerRunningStatus::AUTOTASK_RUNNING_STATUS_BADTIMER;
+TimerRunningStatus CronTimer::start(int nTaskID) {
+    auto ret = TimerRunningStatus::kBadTimer;
     if (timer_ && !timer_->started()) {
         dt::time next_exec = dt::now();
         ret = timer_->startFrom(next_exec, [](void* d) {
@@ -93,7 +93,7 @@ ExpTimerRunningStatus CronTimer::start(int nTaskID) {
             std::cout << " task timer --";
 
         }, &nTaskID);
-        if (AUTOTASK_RUNNING_STATUS_OK == ret) {
+        if (TimerRunningStatus::kOk == ret) {
             // 提前提醒
             if (reminderEnabled()) {
                 reminder_->setRemindTimer(next_exec, [](void* d) {

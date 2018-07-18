@@ -71,13 +71,13 @@ bool AbsTimer::parse() {
 }
 
 // AtDate
-ExpTimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
+TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
     if (the_date > dt::make_uint_date(life_end_)) {
-        return AUTOTASK_RUNNING_STATUS_OVERDUE;	// 过期
+        return TimerRunningStatus::kOverdue;	// 过期
     }
 
     if (arx_.size() < 1) {
-        return AUTOTASK_RUNNING_STATUS_BADTIMER;
+        return TimerRunningStatus::kBadTimer;
     }
 
     switch (eflag_exec_) {
@@ -98,25 +98,25 @@ ExpTimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
             // 如果执行时间甚至还没有到提前量的执行时间，那么返回提前量处的执行时间
             if ((dt::compare_date(t_adv, t_test) >= 0) && (dt::compare_date(t_adv, lifeEnd()) <= 0)) {
                 the_date = dt::make_uint_date(t_adv);
-                return AUTOTASK_RUNNING_STATUS_OK;
+                return TimerRunningStatus::kOk;
             }
 
             // 如果测试时间点落入[提前点，执行点]之间，那么返回这个测试时间点
             if ((dt::compare_date(t_test, t_adv) >= 0) && (dt::compare_date(t_test, t_exec) <= 0)) {
                 the_date = dt::make_uint_date(t_test);
-                return AUTOTASK_RUNNING_STATUS_OK;
+                return TimerRunningStatus::kOk;
             }
         }
-        return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;
+        return TimerRunningStatus::kNoChanceExec;
     }
 
     case AUTOTASK_EXEC_ATDATE: {
         int idx = arx_.find_first_lgoreq(the_date);
         if (-1 != idx) {
             the_date = arx_[idx];
-            return AUTOTASK_RUNNING_STATUS_OK;
+            return TimerRunningStatus::kOk;
         }
-        return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC; // 无机会再执行
+        return TimerRunningStatus::kNoChanceExec; // 无机会再执行
     }
 
     case AUTOTASK_EXEC_ATDAILY: {
@@ -126,61 +126,61 @@ ExpTimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
         if (xDay > 0) {
             dt::time tmNextExecDate = dt::parse_uint_date(the_date) + date::days(xDay);
             if (dt::compare_date(tmNextExecDate, life_end_) > 0) // 计算出来的时间大于生命期之后
-                return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;	// 无机会执行了。
+                return TimerRunningStatus::kNoChanceExec;	// 无机会执行了。
             the_date = dt::make_uint_date(tmNextExecDate);
-            return AUTOTASK_RUNNING_STATUS_OK;
-        } else if (0 == xDay) { //dwDate 本身即为执行日期
-            return AUTOTASK_RUNNING_STATUS_OK;
+            return TimerRunningStatus::kOk;
+        } else if (0 == xDay) { //ddate 本身即为执行日期
+            return TimerRunningStatus::kOk;
         }
         // 不应该执行到这儿
-        return AUTOTASK_RUNNING_STATUS_APPERROR;
+        return TimerRunningStatus::kAppError;
     }
     case AUTOTASK_EXEC_ATWEEKDAY: {
         // 星期x执行
         ASSERT(arx_.size() == 1);
         if (0 == arx_[0]) // 必须至少有一个工作日是可以执行的
-            return AUTOTASK_RUNNING_STATUS_BADTIMER;
-        dt::time tmTest = dt::parse_uint_date(the_date);
+            return TimerRunningStatus::kBadTimer;
+        dt::time tm_test = dt::parse_uint_date(the_date);
         for (int iTestCount = 0; iTestCount < 7; iTestCount++) {
             // 测试7天之内的执行情况,
-            std::tm tmp_test = dt::to_calendar_time(tmTest);
+            std::tm tmp_test = dt::to_calendar_time(tm_test);
             if (arx_[0] & (0x01 << (tmp_test.tm_wday - 1))) { // 0-sunday,1-monday...6-saturday
-                the_date = dt::make_uint_date(tmTest);
-                return AUTOTASK_RUNNING_STATUS_OK;
+                the_date = dt::make_uint_date(tm_test);
+                return TimerRunningStatus::kOk;
             }
-            tmTest += date::days(1);
-            if (dt::compare_date(tmTest, life_end_) > 0) {
-                return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;
+            tm_test += date::days(1);
+            if (dt::compare_date(tm_test, life_end_) > 0) {
+                return TimerRunningStatus::kNoChanceExec;
             }
         }
         // 不应该执行到这儿,当前的设计是一周之内必有一天是可以执行的
-        return AUTOTASK_RUNNING_STATUS_APPERROR;
+        return TimerRunningStatus::kAppError;
     }
     case AUTOTASK_EXEC_ATMONTHDAY: {
         ASSERT(arx_.size() == 1);
         if (0 == arx_[0]) // 必须至少有一个工作日是可以执行的
-            return AUTOTASK_RUNNING_STATUS_BADTIMER;
-        dt::time tmTest = dt::parse_uint_date(the_date);
+            return TimerRunningStatus::kBadTimer;
+        dt::time tm_test = dt::parse_uint_date(the_date);
         for (int iTestCount = 0; iTestCount < 31; iTestCount++) {
-            std::tm tmp_test = dt::to_calendar_time(tmTest);
+            std::tm tmp_test = dt::to_calendar_time(tm_test);
             if (arx_[0] & (0x1 << (tmp_test.tm_mday))) {
-                the_date = dt::make_uint_date(tmTest);
-                return AUTOTASK_RUNNING_STATUS_OK;
+                the_date = dt::make_uint_date(tm_test);
+                return TimerRunningStatus::kOk;
             }
-            tmTest += date::days(1); // 下一天
-            if (dt::compare_date(tmTest, life_end_) > 0) {
-                return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;
+            tm_test += date::days(1); // 下一天
+            if (dt::compare_date(tm_test, life_end_) > 0) {
+                return TimerRunningStatus::kNoChanceExec;
             }
         }
         // 不应该执行到这儿，因为在31天之内，必有一天是可以执行的
-        return AUTOTASK_RUNNING_STATUS_APPERROR;
+        return TimerRunningStatus::kAppError;
     }
     default: {
         ASSERT(false);
-        return AUTOTASK_RUNNING_STATUS_APPERROR;
+        return TimerRunningStatus::kAppError;
     }
     }
-    return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;
+    return TimerRunningStatus::kNoChanceExec;
 }
 
 mstring AbsTimer::description() {
@@ -252,69 +252,69 @@ mstring AbsTimer::description() {
 }
 
 
-void AbsTimer::execTimeSpot(std::vector<dt::time>& vTimes) {
-    vTimes.clear();
+void AbsTimer::execTimeSpot(std::vector<dt::time>& time_points) {
+    time_points.clear();
     for (int i = 0; i < ar_time_.size(); ++i) {
-        vTimes.push_back(dt::parse_uint_time(ar_time_[i]));
+        time_points.push_back(dt::parse_uint_time(ar_time_[i]));
     }
 }
 
-// 如果tmExec的日期大于tmTest的日期，tmNext设定为m_arTime[0],返回TASK_RUNNING_STATUS_OK
-// 如果tmExec的日期等于tmTest的日期，tmNext设定为大于等于tmTest.MakeTime()的值，
+// 如果tm_exec的日期大于tm_test的日期，tmNext设定为m_arTime[0],返回TASK_RUNNING_STATUS_OK
+// 如果tm_exec的日期等于tm_test的日期，tmNext设定为大于等于tm_test.MakeTime()的值，
 //		如果m_arTime中包含这样的时间，返回TASK_RUNNING_STATUS_OK
 //		如果不包含这样的时间，返回TASK_RUNNING_STATUS_TIMENOTMATCH
-// 如果tmExec的日期小于tmTest的日期，则是逻辑错误发生，返回TASK_RUNNING_STATUS_OVERDUE
-ExpTimerRunningStatus AbsTimer::nextRightTimeFrom(__in const dt::time&tmTest,
+// 如果tm_exec的日期小于tm_test的日期，则是逻辑错误发生，返回TASK_RUNNING_STATUS_OVERDUE
+TimerRunningStatus AbsTimer::nextRightTimeFrom(__in const dt::time&tm_test,
         __in const dt::time& tm_exec, __inout uint32_t &dwNextExecTime) {
     ASSERT(ar_time_.size());
     if (ar_time_.size()) {
         // 绝对时间值
-        int iCmp = dt::compare_date(tm_exec, tmTest);
+        int iCmp = dt::compare_date(tm_exec, tm_test);
         if (iCmp > 0) {
             dwNextExecTime = ar_time_[0];
-            return AUTOTASK_RUNNING_STATUS_OK;
+            return TimerRunningStatus::kOk;
         } else if (0 == iCmp) {
-            int idx = ar_time_.find_first_lgoreq(dt::make_uint_time(tmTest));
+            int idx = ar_time_.find_first_lgoreq(dt::make_uint_time(tm_test));
             if (-1 != idx) {
                 dwNextExecTime = ar_time_[idx];
-                return AUTOTASK_RUNNING_STATUS_OK;
+                return TimerRunningStatus::kOk;
             }
-            return AUTOTASK_RUNNING_STATUS_TIMENOTMATCH;
+            return TimerRunningStatus::kTimeNotMatch;
         } else {
-            return AUTOTASK_RUNNING_STATUS_OVERDUE;
+            return TimerRunningStatus::kOverdue;
         }
     }
     // 这儿不应该被执行到
     ASSERT(false);
-    return AUTOTASK_RUNNING_STATUS_BADTIMER;
+    return TimerRunningStatus::kBadTimer;
 }
 
-// tmTest 将被调整，毫秒级别将会忽略置为0
-ExpTimerRunningStatus AbsTimer::getNextExecTimeFrom( __inout dt::time& tm_test,
+// tm_test 将被调整，毫秒级别将会忽略置为0
+TimerRunningStatus AbsTimer::getNextExecTimeFrom( __inout dt::time& tm_test,
         __out dt::time& tm_exec, __out int32_t &period_s) {
     period_s = 0;
 
     if (tm_test >= life_end_) {
-        return AUTOTASK_RUNNING_STATUS_OVERDUE;	// 过期
+        return TimerRunningStatus::kOverdue;	// 过期
     }
 
     uint32_t next_exec_date, next_exec_time;
-    ExpTimerRunningStatus status;
+    TimerRunningStatus status;
     dt::time tmTempTest = tm_exec = tm_test;
     while (true) {
         next_exec_date = dt::make_uint_date(tm_exec);
         status = nextExecDate(next_exec_date); // 执行日期
-        if (AUTOTASK_RUNNING_STATUS_OK == status) {
+        if (TimerRunningStatus::kOk == status) {
             tm_exec = dt::parse_uint_date(next_exec_date);
             status = nextRightTimeFrom(tmTempTest, tm_exec, next_exec_time);
-            if (AUTOTASK_RUNNING_STATUS_OK == status) {
+            if (TimerRunningStatus::kOk == status) {
                 // 执行时间
                 tm_exec = dt::combine_date_time(next_exec_date, next_exec_time);
                 if (tm_exec > life_end_) // 必须检查合成的时间是否超过了任务周期
-                    return AUTOTASK_RUNNING_STATUS_NOCHANCETOEXEC;
+                    return TimerRunningStatus::kNoChanceExec;
                 else
-                    return AUTOTASK_RUNNING_STATUS_OK;
-            } else if (AUTOTASK_RUNNING_STATUS_TIMENOTMATCH == status) {
+                    return TimerRunningStatus::kOk;
+            } else if (TimerRunningStatus::kTimeNotMatch == status) {
                 // 说明当前测试的日期是不可能执行的，只能比今天晚的日期执行
                 // 这时时间可以是最小的
                 tm_exec += date::days(1);
@@ -327,7 +327,7 @@ ExpTimerRunningStatus AbsTimer::getNextExecTimeFrom( __inout dt::time& tm_test,
         }
         return status;
     }
-    return AUTOTASK_RUNNING_STATUS_BADTIMER;
+    return TimerRunningStatus::kBadTimer;
 }
 
 }

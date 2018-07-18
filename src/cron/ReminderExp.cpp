@@ -88,7 +88,7 @@ bool ReminderExp::setRemindTimer(const dt::time& t_exe, OnTimeoutCallback cb, vo
     trp_.data = d;
     trp_.sSound = sound;
     trp_.sMsg = msg;
-    trp_.tmExec = t_exe;
+    trp_.tm_exec = t_exe;
 
     // 何时应该提示时间
     dt::time tmRemind = t_exe - dt::secs(trp_.nSeconds);
