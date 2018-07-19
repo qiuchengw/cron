@@ -250,7 +250,6 @@ mstring AbsTimer::description() {
     return when_des;
 }
 
-
 void AbsTimer::execTimeSpot(std::vector<dt::time>& time_points) {
     time_points.clear();
     for (int i = 0; i < ar_time_.size(); ++i) {
@@ -268,11 +267,11 @@ TimerRunningStatus AbsTimer::nextRightTimeFrom(__in const dt::time&tm_test,
     assert(ar_time_.size());
     if (ar_time_.size()) {
         // 绝对时间值
-        int iCmp = dt::compare_date(tm_exec, tm_test);
-        if (iCmp > 0) {
+        int cmp = dt::compare_date(tm_exec, tm_test);
+        if (cmp > 0) {
             next_exec = ar_time_[0];
             return TimerRunningStatus::kOk;
-        } else if (0 == iCmp) {
+        } else if (0 == cmp) {
             int idx = ar_time_.find_first_lgoreq(dt::make_uint_time(tm_test));
             if (-1 != idx) {
                 next_exec = ar_time_[idx];

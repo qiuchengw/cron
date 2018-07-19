@@ -81,9 +81,10 @@ cron的原始代码写的太烂，几个月前，经过了好几天业余时间�
     - [ ] 统一方法/变量/类等命名风格
     - [x] 使用namespace隔离代码
     - [x] 清理无效代码
-    - [ ] 去掉windows平台依赖（shell仅支持windows，暂不跨平台）
+    - [x] 去掉windows平台依赖（shell仅支持windows，暂不跨平台）
 - [x] 使用cmake管理项目
-- [ ] 支持gcc 5.4.0编译
-- [ ] 支持linux平台
+- [x] 支持gcc 5.4.0编译
+- [x] 支持linux平台
+- [ ] timer的description代码提取到dict_xx中实现
 - [ ] 相对时间：检测系统/进程启动时间
 

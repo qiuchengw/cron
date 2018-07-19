@@ -1,4 +1,4 @@
-#include "relatetimer.h"
+ï»¿#include "relatetimer.h"
 #include "dict_zh.h"
 
 namespace cron {
@@ -12,15 +12,15 @@ RelateTimer::~RelateTimer() {
 
 mstring RelateTimer::description() {
     mstring when_des, time_part;
-    when_des.Format("ÔÚ[%s] [%d][%s]Ö®ºó",
+    when_des.Format("åœ¨[%s] [%d][%s]ä¹‹åï¼Œ",
                     dict::getExecFlagText(eflag_exec_), span_, dict::timeUnitStr(span_unit_));
     // then every
     if (isExecSpan2()) {
-        time_part.Format("È»ºóÃ¿[%d][%s]Ö´ĞĞ", span2_, dict::timeUnitStr(span2_unit_));
+        time_part.Format("ç„¶åæ¯[%d][%s]æ‰§è¡Œä¸€æ¬¡ï¼Œ", span2_, dict::timeUnitStr(span2_unit_));
         when_des += time_part;
         // after x times stop
         if (isExecCount()) {
-            time_part.Format("ÔÚ[%d] ´ÎºóÍ£Ö¹", exec_count_);
+            time_part.Format("åœ¨[%d] æ¬¡ååœæ­¢ã€‚", exec_count_);
             when_des += time_part;
         }
     }
@@ -49,12 +49,12 @@ bool RelateTimer::parse() {
                 return false;
             break;
         }
-        case 'Q': { // µÚ¶ş¸öÊ±¼ä¼ä¸ô
+        case 'Q': { // ç¬¬äºŒä¸ªæ—¶é—´é—´éš”
             if (!_parse_span_time(val, span2_unit_, span2_))
                 return false;
             break;
         }
-        case 'C': { // Ö´ĞĞ´ÎÊı
+        case 'C': { // æ‰§è¡Œæ¬¡æ•°
             exec_count_ = std::stol(val);
             break;
         }
@@ -71,36 +71,36 @@ TimerRunningStatus RelateTimer::_CheckWith(
         return TimerRunningStatus::kOverdue;
     }
     period_s = execSpanSeconds2();
-    // µÚÒ»´ÎÖ´ĞĞÊ±¼äÊÇ£º
+    // ç¬¬ä¸€æ¬¡æ‰§è¡Œæ—¶é—´æ˜¯ï¼š
     dt::time tm_first_exec = tm_start + dt::secs(execSpanSeconds());
 
-    // ´í¹ıÁËµÚÒ»´ÎÖ´ĞĞÊ±¼ä
+    // é”™è¿‡äº†ç¬¬ä¸€æ¬¡æ‰§è¡Œæ—¶é—´
     if (tm_first_exec <= tm_test) {
         if (!isExecSpan2()) {
-            // ´í¹ıµÚÒ»´ÎÖ´ĞĞÊ±¼ä£¬²¢ÇÒ·Ç¶à´ÎÖ´ĞĞ
+            // é”™è¿‡ç¬¬ä¸€æ¬¡æ‰§è¡Œæ—¶é—´ï¼Œå¹¶ä¸”éå¤šæ¬¡æ‰§è¡Œ
             if (TimerExecType::kAfterSysBoot == eflag_exec_)
-                return TimerRunningStatus::kUntilNextSysReboot; // µÈ´ıÏµÍ³ÖØÆô
+                return TimerRunningStatus::kUntilNextSysReboot; // ç­‰å¾…ç³»ç»Ÿé‡å¯
             else if (TimerExecType::kAfterAppStart == eflag_exec_)
-                return TimerRunningStatus::kUntilNextAppReboot; // µÈ´ı³ÌĞòÖØÆô
-            else // ·Ç¶à´Î¿ÉÖ´ĞĞ£¬¹ıÆÚ
+                return TimerRunningStatus::kUntilNextAppReboot; // ç­‰å¾…ç¨‹åºé‡å¯
+            else // éå¤šæ¬¡å¯æ‰§è¡Œï¼Œè¿‡æœŸ
                 return TimerRunningStatus::kNoChanceExec;
         }
 
-        // ¶à´Î¼ä¸ôÖ´ĞĞ
-        // ×Ô´ÓµÚÒ»´Î¿ÉÖ´ĞĞÊ±¼äµ½tm_testÒÑ¾­¹ıÈ¥ÁË¶à³¤Ê±¼ä
+        // å¤šæ¬¡é—´éš”æ‰§è¡Œ
+        // è‡ªä»ç¬¬ä¸€æ¬¡å¯æ‰§è¡Œæ—¶é—´åˆ°tm_testå·²ç»è¿‡å»äº†å¤šé•¿æ—¶é—´
         int64_t dTotalSeconds = dt::total_seconds(tm_test - tm_first_exec);
-        // ÔÚ¹ıÈ¥µÄÕâÃ´³¤Ê±¼äÀï¿ÉÒÔÖ´ĞĞ¶àÉÙ´Î£¿
-        exec_count_already_ = dTotalSeconds / execSpanSeconds2(); //Ö´ĞĞ´ÎÊı
+        // åœ¨è¿‡å»çš„è¿™ä¹ˆé•¿æ—¶é—´é‡Œå¯ä»¥æ‰§è¡Œå¤šå°‘æ¬¡ï¼Ÿ
+        exec_count_already_ = dTotalSeconds / execSpanSeconds2(); //æ‰§è¡Œæ¬¡æ•°
         if (isExecCount() && (exec_count_already_ >= exec_count_)) {
-            // ¿ÉÖ´ĞĞ´ÎÊıÒÑ¾­³¬¹ıÁË×Ü¹²ĞèÒªÖ´ĞĞµÄ´ÎÊı
+            // å¯æ‰§è¡Œæ¬¡æ•°å·²ç»è¶…è¿‡äº†æ€»å…±éœ€è¦æ‰§è¡Œçš„æ¬¡æ•°
             if (TimerExecType::kAfterSysBoot == eflag_exec_)
-                return TimerRunningStatus::kUntilNextSysReboot; // µÈ´ıÏµÍ³ÖØÆô
+                return TimerRunningStatus::kUntilNextSysReboot; // ç­‰å¾…ç³»ç»Ÿé‡å¯
             else if (TimerExecType::kAfterAppStart == eflag_exec_)
-                return TimerRunningStatus::kUntilNextAppReboot; // µÈ´ı³ÌĞòÖØÆô
-            else // ·Ç¶à´Î¿ÉÖ´ĞĞ£¬¹ıÆÚ
+                return TimerRunningStatus::kUntilNextAppReboot; // ç­‰å¾…ç¨‹åºé‡å¯
+            else // éå¤šæ¬¡å¯æ‰§è¡Œï¼Œè¿‡æœŸ
                 return TimerRunningStatus::kNoChanceExec;
         } else {
-            // ¿ÉÖ´ĞĞ´ÎÊı»¹Ã»ÓĞ³¬¹ıÁË×Ü¹²ĞèÒªÖ´ĞĞµÄ´ÎÊı
+            // å¯æ‰§è¡Œæ¬¡æ•°è¿˜æ²¡æœ‰è¶…è¿‡äº†æ€»å…±éœ€è¦æ‰§è¡Œçš„æ¬¡æ•°
             tm_exec = tm_first_exec + dt::secs((exec_count_already_ + 1) * execSpanSeconds2());
             if (tm_exec >= life_end_) {
                 return TimerRunningStatus::kOverdue;
@@ -118,29 +118,29 @@ RelateTimer::TimerBehavior RelateTimer::onFired(OnTimeoutCallback cb, void *d) {
 
     exec_count_already_++;
     if (isExecCount() && exec_count_already_ >= exec_count_) {
-        // ĞèÒªÍ£Ö¹¶¨Ê±Æ÷ÁË
+        // éœ€è¦åœæ­¢å®šæ—¶å™¨äº†
         return TimerBehavior::kStop;
     }
     return TimerBehavior::kContinue;
 }
 
-// tm_test ½«±»µ÷Õû£¬ºÁÃë¼¶±ğ½«»áºöÂÔÖÃÎª0
+// tm_test å°†è¢«è°ƒæ•´ï¼Œæ¯«ç§’çº§åˆ«å°†ä¼šå¿½ç•¥ç½®ä¸º0
 TimerRunningStatus RelateTimer::getNextExecTimeFrom(
     __inout dt::time& tm_test,__out dt::time& tm_exec,__out int32_t &period_s) {
     if (tm_test >= life_end_) {
-        return TimerRunningStatus::kOverdue;	// ¹ıÆÚ
+        return TimerRunningStatus::kOverdue;	// è¿‡æœŸ
     }
 
     switch (eflag_exec_) {
-    case TimerExecType::kAfterSysBoot: {	//= 0x00000001,	// ÏµÍ³Æô¶¯
+    case TimerExecType::kAfterSysBoot: {	//= 0x00000001,	// ç³»ç»Ÿå¯åŠ¨
         // return _RelateTime_CheckWith(QProcessMan::GetSystemStartupTime(),tm_test,tm_exec, period_s);
         break;
     }
-    case TimerExecType::kAfterAppStart: {	// = 0x00000004,// ±¾³ÌĞòÆô¶¯
+    case TimerExecType::kAfterAppStart: {	// = 0x00000004,// æœ¬ç¨‹åºå¯åŠ¨
         //return _RelateTime_CheckWith(QProcessMan::GetCurrentProcessStartupTime(),tm_test,tm_exec, period_s);
         break;
     }
-    /*	case TASK_EXEC_AFTERPROGSTART:	// = 0x00000008,// Íâ²¿³ÌĞòÆô¶¯
+    /*	case TASK_EXEC_AFTERPROGSTART:	// = 0x00000008,// å¤–éƒ¨ç¨‹åºå¯åŠ¨
     {
     QTime tmProgStart;
     if (QProcessMgr::IsExeRun(m_sXFiledExp,tmProgStart))
@@ -149,11 +149,11 @@ TimerRunningStatus RelateTimer::getNextExecTimeFrom(
     }
     return TASK_RUNNING_STATUS_BASEDONEXETERNALPROG;
     }
-    case TASK_EXEC_AFTERPROGEXIT:	// = 0x00000010,// Íâ²¿³ÌĞòÍË³ö
+    case TASK_EXEC_AFTERPROGEXIT:	// = 0x00000010,// å¤–éƒ¨ç¨‹åºé€€å‡º
     {
     return TASK_RUNNING_STATUS_BASEDONEXETERNALPROG;
     }*/
-    case TimerExecType::kAfterTimerStart: {	// = 0x00000002,	// ÈÎÎñÆô¶¯
+    case TimerExecType::kAfterTimerStart: {	// = 0x00000002,	// ä»»åŠ¡å¯åŠ¨
         return _CheckWith(life_begin_, tm_test, tm_exec, period_s);
     }
     }
