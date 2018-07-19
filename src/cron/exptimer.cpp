@@ -75,7 +75,8 @@ bool ExpTimer::setTimer(int64_t due, int64_t period, OnTimeoutCallback cb, void*
             break;
 
         case TimerBehavior::kRefresh:
-            startFrom(dt::now(), cb, d);
+			auto tm_now = dt::now();	// gcc 需要这个临时变量，vs不需要
+			startFrom(tm_now, cb, d);
             break;
         };
     }, d);
