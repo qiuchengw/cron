@@ -61,8 +61,8 @@ private:
     Ints ar_time_;	// 执行时间点，
 
     // 在一天中的 [03:00 ~ 20:00] 每隔 30m 执行一次
-    uint16_t t_begin_;	// 执行时间
-    uint16_t t_end_;
+    uint16_t time_begin_;	// 执行时间
+    uint16_t time_end_;
 };
 
 }

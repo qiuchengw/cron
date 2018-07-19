@@ -35,11 +35,11 @@ bool AbsTimer::parse() {
             break;
         }
         case 'S': { // 时间
-            t_begin_ = std::stol(val);
+            time_begin_ = std::stol(val);
             break;
         }
         case 'E': { // 时间
-            t_end_ = std::stol(val);
+            time_end_ = std::stol(val);
             break;
         }
         case 'Q': { // 时间

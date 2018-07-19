@@ -24,6 +24,11 @@ typedef std::vector<mstring> StringArray;
 #	define _RemoveFlag(l,f) ((l) &= ~(f))
 #endif
 
+#ifndef __in
+#define __in
+#define __out
+#define __inout
+#endif
 
 namespace cron {
 
