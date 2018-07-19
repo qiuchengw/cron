@@ -58,14 +58,14 @@ private:
     // 相对于ENUM_TASK_EXECFLAG所指示的任务的
     // 发生后多少时间执行第一次任务，单位换算为秒
     // 此时间限制为24小时之内
-    uint32_t span_;		// 间隔时间或间隔日期
-    char span_unit_;	// 原始单位s/m/h
+    uint32_t span_ = 0;		// 间隔时间或间隔日期
+    char span_unit_ = 0;	// 原始单位s/m/h
     // 相对于第一次任务执行后多少时间执行
-    uint32_t span2_;	// 第二个时间间隔
-    char span2_unit_;
-    int exec_count_;	// 第一次执行后，再执行的次数
+    uint32_t span2_ = 0;	// 第二个时间间隔
+    char span2_unit_ = 0;
+    int exec_count_ = 0;	// 第一次执行后，再执行的次数
     uint32_t exec_count_already_ = 0;	// 已经执行的次数
-    TimerExecType eflag_exec_;
+    TimerExecType eflag_exec_ = TimerExecType::kNotSet;
 };
 
 }

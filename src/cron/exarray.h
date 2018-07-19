@@ -4,9 +4,10 @@
 
 template<typename T>
 class ExArray : public std::vector<T> {
+	typedef std::vector<T> _base;
 public:
     inline bool contain(const T&t ) const {
-        return std::find(begin(), end(), t) != end();
+        return std::find(_base::begin(), _base::end(), t) != _base::end();
     }
 
     /*
@@ -14,19 +15,21 @@ public:
      * ie=-1的时候，范围为 [ib,size);
      *
      */
-    bool contain_within_index(const T&t,int ib, int ie=-1)const {
-        if (ib < 0)
-            ib = 0;
+    bool contain_within_index(const T&t, int ib, int ie=-1)const {
+		if (ib < 0) {
+			ib = 0;
+		}
 
-        size_t c = size();
-        if (ib >= c)
-            return false;
+		if (ib >= _base::size()) {
+			return false;
+		}
 
-        if (-1 == ie )
-            ie = c - 1;
+		if (-1 >= ie) {
+			ie = _base::size() - 1;
+		}
 
         for (; ib <= ie; ib++) {
-            if (at(ib) == t) {
+            if (_base::at(ib) == t) {
                 return true;
             }
         }
@@ -39,19 +42,21 @@ public:
      * 返回其所在索引，-1 为未找到
      *
      */
-    int find_first_lgoreq(const T &t, int ib=0,int ie=-1) const {
-        if (ib < 0)
-            ib = 0;
+    int find_first_lgoreq(const T &t, int ib = 0, int ie = -1) const {
+		if (ib < 0) {
+			ib = 0;
+		} 
+		
+		if (ib >= _base::size()) {
+			return -1;
+		}
 
-        int c = size();
-        if (ib >= c)
-            return -1;
-
-        if (-1 == ie )
-            ie = c - 1;
+		if (-1 >= ie) {
+			ie = _base::size() - 1;
+		}
 
         for (; ib <= ie; ib++) {
-            if (at(ib) >= t) {
+            if (_base::at(ib) >= t) {
                 return ib;
             }
         }

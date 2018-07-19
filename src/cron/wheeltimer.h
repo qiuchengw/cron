@@ -18,46 +18,8 @@
 // }
 //////////////////////////////////////////////////////////////////////////
 
-class WheelTimerManager;
+class WheelTimer;
 typedef std::function<void(void*)> OnTimeoutCallback;
-
-class WheelTimer {
-public:
-    enum TimerType { ONCE, CIRCLE };
-
-    WheelTimer(WheelTimerManager& manager);
-    ~WheelTimer();
-
-    template<typename Fun>
-    void Start(Fun fun, void* data, unsigned interval, TimerType timeType = CIRCLE) {
-        Stop();
-        interval_ = interval;
-        timerFun_ = fun;
-        timerType_ = timeType;
-        data_ = data;
-        expires_ = interval_ + WheelTimerManager::GetCurrentMillisecs();
-        manager_.AddTimer(this);
-    }
-
-    void Stop();
-
-private:
-    void OnTimer(unsigned long long now);
-
-private:
-    friend class WheelTimerManager;
-
-    WheelTimerManager& manager_;
-    TimerType timerType_;
-    OnTimeoutCallback timerFun_;
-    void *data_ = nullptr;
-
-    unsigned interval_;
-    unsigned long long expires_;
-
-    int vecIndex_;
-    std::list<WheelTimer*>::iterator itr_;
-};
 
 class WheelTimerManager {
 public:
@@ -77,4 +39,42 @@ private:
     typedef std::list<WheelTimer*> TimeList;
     std::vector<TimeList> tvec_;
     unsigned long long checkTime_;
+};
+
+class WheelTimer {
+public:
+	enum TimerType { ONCE, CIRCLE };
+
+	WheelTimer(WheelTimerManager& manager);
+	~WheelTimer();
+
+	template<typename Fun>
+	void Start(Fun fun, void* data, unsigned interval, TimerType timeType = CIRCLE) {
+		Stop();
+		interval_ = interval;
+		timerFun_ = fun;
+		timerType_ = timeType;
+		data_ = data;
+		expires_ = interval_ + WheelTimerManager::GetCurrentMillisecs();
+		manager_.AddTimer(this);
+	}
+
+	void Stop();
+
+private:
+	void OnTimer(unsigned long long now);
+
+private:
+	friend class WheelTimerManager;
+
+	WheelTimerManager& manager_;
+	TimerType timerType_;
+	OnTimeoutCallback timerFun_;
+	void *data_ = nullptr;
+
+	unsigned interval_;
+	unsigned long long expires_;
+
+	int vecIndex_;
+	std::list<WheelTimer*>::iterator itr_;
 };
