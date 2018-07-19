@@ -2,11 +2,13 @@
 
 #include <list>
 #include <vector>
+#include <string>
+#include <cassert>
 
 #include "stdstring.h"
 typedef CStdStr<char> mstring;
+// typedef std::string mstring;
 typedef std::vector<mstring> StringArray;
-
 
 #ifndef INVALID_ID
 #define INVALID_ID (-1)

@@ -120,7 +120,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
     }
 
     case TimerExecType::kAtDaily: {
-        ASSERT(arx_.size() == 1);
+        assert(arx_.size() == 1);
         auto tsdate = dt::parse_uint_date(the_date) - dt::parse_uint_date(dt::make_uint_date(life_begin_));
         uint32_t xday = dt::total_days(tsdate) % arx_[0]; // 还有几天下次执行
         if (xday > 0) {
@@ -137,7 +137,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
     }
     case TimerExecType::kAtWeekday: {
         // 星期x执行
-        ASSERT(arx_.size() == 1);
+        assert(arx_.size() == 1);
         if (0 == arx_[0]) // 必须至少有一个工作日是可以执行的
             return TimerRunningStatus::kBadTimer;
         dt::time tm_test = dt::parse_uint_date(the_date);
@@ -157,7 +157,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
         return TimerRunningStatus::kAppError;
     }
     case TimerExecType::kAtMonthDay: {
-        ASSERT(arx_.size() == 1);
+        assert(arx_.size() == 1);
 		if (0 == arx_[0]) {// 必须至少有一个工作日是可以执行的
 			return TimerRunningStatus::kBadTimer;
 		}
@@ -177,7 +177,7 @@ TimerRunningStatus AbsTimer::nextExecDate(__inout uint32_t& the_date) {
         return TimerRunningStatus::kAppError;
     }
     default: {
-        ASSERT(false);
+        assert(false);
         return TimerRunningStatus::kAppError;
     }
     }
@@ -214,13 +214,13 @@ mstring AbsTimer::description() {
         break;
     }
     case TimerExecType::kAtDaily: {
-        ASSERT(arx_.size() == 1);
+        assert(arx_.size() == 1);
         when_des.Format("每[%d]天的[%s]", arx_[0], time_part);
         break;
     }
     case TimerExecType::kAtWeekday: {
         // 星期x执行
-        ASSERT(arx_.size() == 1);
+        assert(arx_.size() == 1);
         mstring weekdays, tmp;
         for (int weekday = 0; weekday < 7; weekday++) {
             // 测试7天之内的执行情况,
@@ -234,7 +234,7 @@ mstring AbsTimer::description() {
         break;
     }
     case TimerExecType::kAtMonthDay: {
-        ASSERT(arx_.size() == 1);
+        assert(arx_.size() == 1);
         mstring days, tmp;
         for (int day = 0; day < 31; day++) {
             if (arx_[0] & (0x1 << day)) {
@@ -265,7 +265,7 @@ void AbsTimer::execTimeSpot(std::vector<dt::time>& time_points) {
 // 如果tm_exec的日期小于tm_test的日期，则是逻辑错误发生，返回TASK_RUNNING_STATUS_OVERDUE
 TimerRunningStatus AbsTimer::nextRightTimeFrom(__in const dt::time&tm_test,
         __in const dt::time& tm_exec, __inout uint32_t &next_exec) {
-    ASSERT(ar_time_.size());
+    assert(ar_time_.size());
     if (ar_time_.size()) {
         // 绝对时间值
         int iCmp = dt::compare_date(tm_exec, tm_test);
@@ -284,7 +284,7 @@ TimerRunningStatus AbsTimer::nextRightTimeFrom(__in const dt::time&tm_test,
         }
     }
     // 这儿不应该被执行到
-    ASSERT(false);
+    assert(false);
     return TimerRunningStatus::kBadTimer;
 }
 

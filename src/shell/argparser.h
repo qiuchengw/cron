@@ -121,7 +121,7 @@ protected:
      *      AUTOTASK_DO_NOTE    ÎÞÐ§ÃüÁî»òhelpÃüÁî¡£
     **/
     ENUM_AUTOTASK_DOWHAT GetDoWhat(__out mstring& sDoWhat) {
-        ASSERT(m_args.size() >= 2);
+        assert(m_args.size() >= 2);
 
         ENUM_AUTOTASK_DOWHAT eRet = AUTOTASK_DO_NOTSET;
 
@@ -264,7 +264,7 @@ protected:
      *          sText
     **/
     inline bool IsCommand(__in const CStdString& sText) {
-        ASSERT(sText.size() > 1);
+        assert(sText.size() > 1);
         return (sText[0] == '-');
     }
 
@@ -326,7 +326,7 @@ protected:
     bool ParseAbsTime(__in const mstring& src, __inout dt::time& tmBegin,
                       __inout dt::time& tmEnd, __out mstring& sTime) {
         // abs time
-        ASSERT(tmEnd > tmBegin);
+        assert(tmEnd > tmBegin);
 
         StringArray arP;
         if (SplitString(src, arP) != 2) {

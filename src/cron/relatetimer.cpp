@@ -157,7 +157,7 @@ TimerRunningStatus RelateTimer::getNextExecTimeFrom(
         return _CheckWith(life_begin_, tm_test, tm_exec, period_s);
     }
     }
-    ASSERT(false);
+    assert(false);
     return TimerRunningStatus::kBadTimer;
 }
 

@@ -2047,7 +2047,8 @@ class CStdStr : public std::basic_string<CT> {
     // Typedefs for shorter names.  Using these names also appears to help
     // us avoid some ambiguities that otherwise arise on some platforms
 
-#define MYBASE std::basic_string<CT>				 // my base class
+//#define MYBASE std::basic_string<CT>				 // my base class
+	typedef typename std::basic_string<CT> MYBASE;
     //typedef typename std::basic_string<CT>		MYBASE;	 // my base class
     typedef CStdStr<CT>							MYTYPE;	 // myself
     typedef typename MYBASE::const_pointer		PCMYSTR; // PCSTR or PCWSTR
@@ -3029,7 +3030,7 @@ public:
         CT* pBuf			= NULL;
         int nChars			= 1;
         int nUsed			= 0;
-        size_type nActual	= 0;
+		MYSIZE nActual	= 0;
         int nTry			= 0;
 
         do {
@@ -3393,7 +3394,7 @@ public:
     // that CStdStringW gets instantiated even in non-Unicode builds.
 
     void AnsiToOem() {
-        if ( sizeof(CT) == sizeof(char) && !empty() ) {
+        if ( sizeof(CT) == sizeof(char) && !MYBASE::empty() ) {
             ::CharToOem(reinterpret_cast<PCSTR>(this->c_str()),
                         reinterpret_cast<PSTR>(GetBuf()));
         } else {
@@ -3402,7 +3403,7 @@ public:
     }
 
     void OemToAnsi() {
-        if ( sizeof(CT) == sizeof(char) && !empty() ) {
+        if ( sizeof(CT) == sizeof(char) && !MYBASE::empty() ) {
             ::OemToChar(reinterpret_cast<PCSTR>(this->c_str()),
                         reinterpret_cast<PSTR>(GetBuf()));
         } else {

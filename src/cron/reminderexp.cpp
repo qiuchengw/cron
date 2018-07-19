@@ -85,7 +85,7 @@ bool ReminderExp::setRemindTimer(const dt::time& t_exe, OnTimeoutCallback cb, vo
     }
 
     trp_.nSeconds = helper::howManySecs(nA, unit);
-    ASSERT(trp_.nSeconds > 0);
+    assert(trp_.nSeconds > 0);
     trp_.data = d;
     trp_.sSound = sound;
     trp_.sMsg = msg;

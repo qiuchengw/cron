@@ -112,7 +112,7 @@ bool ExpTimer::_parse_span_time(__in const mstring &exp, __out char& unit, __out
     case 'h':
         return true;
     }
-    ASSERT(false);
+    assert(false);
     return false;
 }
 

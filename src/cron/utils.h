@@ -246,7 +246,7 @@ inline uint32_t howManySecs(int n, char unit) {
     case 'H':
         return n * 3600;
     default:
-        ASSERT(false);
+        assert(false);
         return 0;
     }
 }
@@ -288,7 +288,7 @@ inline bool parseInt(__in const mstring& src, __out int& nT) {
 inline bool makeAbsTimerExp(TimerExecType flag, dt::time& tmB, dt::time& tmE, StringArray& date_points, 
 	StringArray& time_points, __out mstring& result_exp, __out mstring& error) {
     if (time_points.empty() || date_points.empty()) {
-        ASSERT(false);
+        assert(false);
         error = "必须至少指定一个日期和一个时间";
         return false;
     }

@@ -66,7 +66,7 @@ namespace cron {
 			case TimerExecType::kExecAndThen: // 0x01000000,	// 相对时间之后再次执行多次间隔
 				return "相对时间之后再次执行多次间隔";
 			}
-			ASSERT(false);
+			assert(false);
 			return "GetExecFlagText->未知参数";
 		}
 
@@ -82,7 +82,7 @@ namespace cron {
 			case 'H':
 				return "时";
 			default:
-				ASSERT(false);
+				assert(false);
 				return "无效单位";
 			}
 		}
