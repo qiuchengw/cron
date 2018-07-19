@@ -72,7 +72,8 @@ int main() {
 	MyTask a_task;
 	// 启动任务后5s执行一次，然后每隔2s执行一次，共计执行5次后停止
 	if (auto t = ExpTimer::create("R=2;P=5s; Q = 2s; C = 5;")) {
-		t->startFrom(dt::now(), [](void *p) {
+		auto tm_now = dt::now();
+		t->startFrom(tm_now, [](void *p) {
 			reinterpret_cast<MyTask*>(p)->doTask();
 		}, &a_task);
 	}

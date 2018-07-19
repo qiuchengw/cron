@@ -77,6 +77,8 @@ class MyTimerMan {
 
 public:
     MyTimerMan() {
+		seq_ = 0;
+
         for (_TimerThread& t: timer_thread_) {
             t.run();
         }
@@ -122,6 +124,10 @@ protected:
         };
 
     public:
+		_TimerThread() {
+			stop_ = false;
+		}
+
         ~_TimerThread() {
         }
 
@@ -211,14 +217,14 @@ protected:
         std::unordered_map<int, _TimerTyp*> timer_;
         std::thread *th_ = nullptr;
         std::mutex mutx_;
-        std::atomic_bool stop_ = false;
+        std::atomic_bool stop_/* = false*/;
 
         std::queue<TimerReq> req_;
     };
 
 private:
     // –Ú¡–∫≈
-    std::atomic_int seq_ = 0;
+    std::atomic_int seq_/* = 0*/;
     std::array<_TimerThread, ThreadNum> timer_thread_;
 };
 
